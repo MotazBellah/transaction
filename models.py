@@ -1,5 +1,6 @@
 import sys, os
-from datetime import datetime, timezone
+from datetime import datetime
+from pytz import utc
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
@@ -21,6 +22,7 @@ class User(UserMixin, db.Model):
 class Currency(db.Model):
     __tablename__ = 'currency'
 
+    id = db.Column(db.Integer, primary_key=True)
     bitcoin_id =  db.Column(db.Integer)
     bitcoin_balance =  db.Column(db.String(1000000), nullable=False)
     ethereum_id =  db.Column(db.Integer)
@@ -38,8 +40,8 @@ class Transaction(db.Model):
     currency_Type = db.Column(db.String(), nullable=False)
     done = db.Column(db.Boolean, default=False)
     target_user = db.Column(db.Integer, nullable=False)
-    time_created = db.Column(db.String(250), default=datetime.now(timezone.utc).astimezone().strftime("%a, %d %b %Y %H:%M:%S"))
-    time_processed = db.Column(db.String(250), default=datetime.now(timezone.utc).astimezone().strftime("%a, %d %b %Y %H:%M:%S"))
+    time_created = db.Column(db.String(250), default=datetime.now(utc))
+    time_processed = db.Column(db.String(250), default=datetime.now(utc))
     state = db.Column(db.String(), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(User)
