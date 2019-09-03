@@ -1,7 +1,5 @@
 import sys, os
 from datetime import datetime
-from pytz import utc
-
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 
@@ -39,8 +37,8 @@ class Transaction(db.Model):
     currency_amount = db.Column(db.Float, nullable=False)
     currency_Type = db.Column(db.String(), nullable=False)
     target_user = db.Column(db.Integer, nullable=False)
-    time_created = db.Column(db.String(250), default=datetime.now(utc))
-    time_processed = db.Column(db.String(250), default=datetime.now(utc))
+    time_created = db.Column(db.String(250), default=datetime.now())
+    time_processed = db.Column(db.String(250), default=datetime.now())
     state = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(User)
