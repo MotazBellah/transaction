@@ -21,3 +21,40 @@ db = SQLAlchemy(app)
 # configure flask_login
 login = LoginManager(app)
 login.init_app(app)
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+
+@app.route('/')
+@app.route('/register', methods=['GET', 'POST'])
+def login_form():
+    reg_form = RegistartionForm()
+    if reg_form.validate_on_submit():
+        username = reg_form.username.data
+        email = reg_form.email.data
+        password = reg_form.password.data
+        hashed_pswd = pbkdf2_sha256.hash(password)
+        # Add user to DB
+        user = User(username=username, email=email, password=hashed_pswd)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+
+    return render_template('log.html', form=reg_form)
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm()
+
+    # Allow login if validation success
+    if login_form.validate_on_submit():
+        user_object = User.query.filter_by(email=login_form.email.data).first()
+        login_user(user_object)
+        login_session['user_id'] = user_object.id
+        return redirect(url_for('show_tasks'))
+
+    return render_template("login.html", form=login_form)
