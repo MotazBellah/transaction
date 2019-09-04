@@ -40,5 +40,6 @@ class Transaction(db.Model):
     time_created = db.Column(db.String(250), default=datetime.now())
     time_processed = db.Column(db.String(250), default=datetime.now())
     state = db.Column(db.String())
+    done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(User)
