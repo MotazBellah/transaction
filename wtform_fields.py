@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
-from models import User
+from models import User, Currency
 from passlib.hash import pbkdf2_sha256
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField, IntegerField
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 
 # custom validator for registeration form, to check if email dublicate
@@ -23,6 +23,18 @@ def invalid_credentials(form, field):
         raise ValidationError("Email or password is incorrect")
     elif not pbkdf2_sha256.verify(password_entered, user_object.password):
         raise ValidationError("Email or password is incorrect")
+
+# custom validator for registeration form, to check if email dublicate
+def bitcoin_id_exists(form, field):
+    currency_object = Currency.query.filter_by(bitcoin_id=field.data).first()
+    if currency_object:
+        raise ValidationError("This bitcoin id is aleardy exists")
+
+# custom validator for registeration form, to check if email dublicate
+def ethereum_id_exists(form, field):
+    currency_object = Currency.query.filter_by(ethereum_id=field.data).first()
+    if currency_object:
+        raise ValidationError("This ethereum id is aleardy exists")
 
 
 class RegistartionForm(FlaskForm):
@@ -52,4 +64,18 @@ class LoginForm(FlaskForm):
                         validators=[InputRequired(message="Email Required"), Email(message="This field requires a valid email address")])
     password = PasswordField('password_lable',
                              validators=[InputRequired(message="Password Required"), invalid_credentials])
+    submit_button = SubmitField("Login")
+
+###### Check this form ####
+class CurrencyForm(FlaskForm):
+    """ Currency Form """
+
+    bitcoin_id = IntegerField('bitcoin_id', validators=[InputRequired(message="Bitcoin Wallet Id is required"), bitcoin_id_exists])
+    bitcoin_balance = StringField('bitcoin_balance', validators=[InputRequired(message="Bitcoin Wallet balance is required"), Length(max=1000000)])
+    ethereum_id = IntegerField('ethereum_id',
+                                 validators=[InputRequired(message="Ethereum Wallet Id is required"), ethereum_id_exists])
+    ethereum_balance = StringField('ethereum_balance',
+                             validators=[InputRequired(message="Ethereum Wallet balance is required"), Length(max=1000000)])
+    max_amount = FloatField('max_amount', validators=[InputRequired(message="Max amount that is allowed per transaction is required")])
+
     submit_button = SubmitField("Login")

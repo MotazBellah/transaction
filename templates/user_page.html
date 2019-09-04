@@ -1,0 +1,50 @@
+{% from 'form_helper.html' import displayField %}
+
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+
+{% block head %}
+     {{ super() }}
+    <style media="screen">
+        ul {
+            list-style-type:none;
+            text-align: left;
+            padding-inline-start: 0px
+        }
+        ul li {
+            color: red;
+        }
+        #log{
+            /* margin: auto; */
+            width: 50%;
+        }
+        @media only screen and (max-width: 600px) {
+          #log {
+            width: 100%;
+          }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+
+<nav class="navbar navbar-expand-xlg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Currency</a>
+
+    <span class="navbar-text float-right">
+        <a class="btn btn-outline-danger" href="{{ url_for('logout') }}">log out</a>
+    </span>
+
+</nav>
+
+<div id="log" class="mx-auto">
+    <h1>Currency page</h1>
+    <a href="{{ url_for('currencyAccount', user_id=user_id)}}" class="btn btn-outline-success">Create currency account</a>
+</div>
+
+
+{% block script %}
+    {{ super() }}
+{% endblock %}
+{% endblock %}

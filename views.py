@@ -56,9 +56,39 @@ def login():
         user_object = User.query.filter_by(email=login_form.email.data).first()
         login_user(user_object)
         login_session['user_id'] = user_object.id
-        return redirect(url_for('show_tasks'))
+        # return redirect(url_for('show_tasks'))
+        return render_template("user_page.html", user_id=user_object.id)
 
     return render_template("login.html", form=login_form)
+
+
+# @app.route('/user', methods=['GET', 'POST'])
+# def mainPage():
+#     user_id = login_session['user_id']
+
+
+
+
+
+@app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
+def currencyAccount():
+    currency_form = CurrencyForm()
+
+    # Allow login if validation success
+    if currency_form.validate_on_submit():
+        bitcoin_id = reg_form.bitcoin_id.data
+        bitcoin_balance = reg_form.bitcoin_balance.data
+        ethereum_id = reg_form.ethereum_id.data
+        ethereum_balance = reg_form.ethereum_balance.data
+        max_amount = reg_form.max_amount.data
+        # Add currency to DB
+        currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
+                            ethereum_id=ethereum_id, ethereum_balance=ethereum_balance,
+                            max_amount=max_amount, user_id=user_id)
+        db.session.add(currency)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template("current_account.html", form=currency_form, user_id=user_id)
 
 
 if __name__ == '__main__':
