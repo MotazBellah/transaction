@@ -133,6 +133,14 @@ def transaction(user_id):
                            user_id=login_session['user_id']
                            )
 
+
+@app.route('/transaction-history', methods=['GET', 'POST'])
+@login_required
+def transaction_history():
+    # user_id = login_session['user_id']
+    transactions = Transaction.query.filter_by(done=False).all()
+    return render_template('trans_history.html', transactions=transactions)
+
 if __name__ == '__main__':
     # app.secret_key = 'super_secret_key'
     PORT = int(os.environ.get('PORT', 5000))
