@@ -37,6 +37,21 @@ def ethereum_id_exists(form, field):
         raise ValidationError("This ethereum id is aleardy exists")
 
 
+# custom validator for registeration form, to check if email dublicate
+def ethereum_id_exists(form, field):
+    currency_object = Currency.query.filter_by(ethereum_id=field.data).first()
+    if currency_object:
+        raise ValidationError("This ethereum id is aleardy exists")
+
+# custom validator for registeration form, to check if email dublicate
+def balance_not_number(form, field):
+    balance_number = field.data
+    try:
+        int(balance_number)
+    except ValueError:
+        raise ValidationError("The balance should be number")
+
+
 class RegistartionForm(FlaskForm):
     """ Registartion Form """
 
@@ -71,11 +86,11 @@ class CurrencyForm(FlaskForm):
     """ Currency Form """
 
     bitcoin_id = IntegerField('bitcoin_id', validators=[InputRequired(message="Bitcoin Wallet Id is required"), bitcoin_id_exists])
-    bitcoin_balance = StringField('bitcoin_balance', validators=[InputRequired(message="Bitcoin Wallet balance is required"), Length(max=1000000)])
+    bitcoin_balance = StringField('bitcoin_balance', validators=[InputRequired(message="Bitcoin Wallet balance is required"), Length(max=1000000), balance_not_number])
     ethereum_id = IntegerField('ethereum_id',
                                  validators=[InputRequired(message="Ethereum Wallet Id is required"), ethereum_id_exists])
     ethereum_balance = StringField('ethereum_balance',
-                             validators=[InputRequired(message="Ethereum Wallet balance is required"), Length(max=1000000)])
+                             validators=[InputRequired(message="Ethereum Wallet balance is required"), Length(max=1000000), balance_not_number])
     max_amount = FloatField('max_amount', validators=[InputRequired(message="Max amount that is allowed per transaction is required")])
 
     submit_button = SubmitField("Login")
