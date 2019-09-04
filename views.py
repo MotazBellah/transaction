@@ -8,11 +8,12 @@ from flask import session as login_session
 from wtform_fields import *
 import os
 # import threading
-from concurrent.futures import ThreadPoolExecutor
+# from concurrent.futures import ThreadPoolExecutor
 from time import sleep
+from flask_executor import Executor
 
 # DOCS https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
-executor = ThreadPoolExecutor(2)
+# executor = ThreadPoolExecutor(2)
 
 # from apscheduler.schedulers.background import BackgroundScheduler
 # from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
@@ -33,15 +34,19 @@ db = SQLAlchemy(app)
 login = LoginManager()
 login.init_app(app)
 
+executor = Executor(app)
+app.config['EXECUTOR_TYPE'] = 'thread'
+app.config['EXECUTOR_MAX_WORKERS'] = 5
+
 def transaction_run():
     print('working...')
-    with app.app_context():
-        x = Transaction.query.filter_by(done=False).all()
-        for i in x:
-            i.done = True
-            db.merge(x)
-            db.commit()
-            sleep(5)
+    x = Transaction.query.filter_by(done=False).all()
+    for i in x:
+        i.done = True
+        db.merge(x)
+        db.commit()
+    print('Done!!!!')
+
 
 
 
@@ -160,8 +165,8 @@ def transaction(user_id):
 @app.route('/transaction-history', methods=['GET', 'POST'])
 @login_required
 def transaction_history():
-    with app.app_context():
-        executor.submit(transaction_run)
+
+    executor.submit(transaction_run)
     # user_id = login_session['user_id']
     transactions = Transaction.query.filter_by(done=False).all()
     return render_template('trans_history.html', transactions=transactions)
