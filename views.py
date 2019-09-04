@@ -35,12 +35,13 @@ login.init_app(app)
 
 def transaction_run():
     print('working...')
-    x = Transaction.query.filter_by(done=False).all()
-    for i in x:
-        i.done = True
-        db.merge(x)
-        db.commit()
-        sleep(5)
+    with app.app_context():
+        x = Transaction.query.filter_by(done=False).all()
+        for i in x:
+            i.done = True
+            db.merge(x)
+            db.commit()
+            sleep(5)
 
 
 
@@ -159,7 +160,8 @@ def transaction(user_id):
 @app.route('/transaction-history', methods=['GET', 'POST'])
 @login_required
 def transaction_history():
-    executor.submit(transaction_run)
+    with app.app_context():
+        executor.submit(transaction_run)
     # user_id = login_session['user_id']
     transactions = Transaction.query.filter_by(done=False).all()
     return render_template('trans_history.html', transactions=transactions)
