@@ -7,11 +7,16 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from flask import session as login_session
 from wtform_fields import *
 import os
-import threading
+# import threading
+from concurrent.futures import ThreadPoolExecutor
+from time import sleep
 
-from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+# DOCS https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
+executor = ThreadPoolExecutor(2)
+
+# from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+# from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 
 app = Flask(__name__)
@@ -28,12 +33,15 @@ db = SQLAlchemy(app)
 login = LoginManager()
 login.init_app(app)
 
-# def transaction_run():
-#     with app.app_context():
-#         x = Transaction.query.filter_by(done=False).first
-#         x.done = True
-#         db.merge(x)
-#         db.commit()
+def transaction_run():
+    x = Transaction.query.filter_by(done=False).all()
+    for i in x:
+        i.done = True
+        db.merge(x)
+        db.commit()
+        sleep(5)
+
+
 
 
 
@@ -150,6 +158,7 @@ def transaction(user_id):
 @app.route('/transaction-history', methods=['GET', 'POST'])
 @login_required
 def transaction_history():
+    executor.submit(transaction_run)
     # user_id = login_session['user_id']
     transactions = Transaction.query.filter_by(done=False).all()
     return render_template('trans_history.html', transactions=transactions)
