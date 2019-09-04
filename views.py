@@ -177,7 +177,7 @@ def transaction(user_id):
 @login_required
 def transaction_history():
 
-    executor.submit(transaction_run)
+    # executor.submit(transaction_run)
     # user_id = login_session['user_id']
     transactions = Transaction.query.filter_by(done=False).all()
     return render_template('trans_history.html', transactions=transactions)
