@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from flask import session as login_session
 from wtform_fields import *
 import os
+import json
 import threading
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -31,9 +32,12 @@ scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_de
 def transaction_run():
     x = Transaction.query.filter_by(done=False).first
     if x:
-        x.done = True
-        db.merge(x)
-        db.commit()
+        with open('static/best_news.json', 'w') as json_file:
+            # for i in x:
+            json.dump(x, json_file)
+        # x.done = True
+        # db.merge(x)
+        # db.commit()
 
 
 scheduler.add_job(transaction_run, 'interval', seconds=7)
