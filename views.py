@@ -77,9 +77,6 @@ def mainPage():
     return render_template('user_page.html', user_id=user_id)
 
 
-
-
-
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def currencyAccount(user_id):
@@ -99,8 +96,34 @@ def currencyAccount(user_id):
         db.session.add(currency)
         db.session.commit()
         return redirect(url_for('mainPage'))
-    return render_template("currency_account.html", form=currency_form, user_id=login_session['user_id'])
+    return render_template("currency_account.html",
+                           form=currency_form,
+                           user_id=login_session['user_id']
+                           )
 
+
+@app.route('/transaction/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def transaction(user_id):
+    trans_form = TransactionForm()
+
+    # Allow login if validation success
+    if trans_form.validate_on_submit():
+        currency_amount = trans_form.currency_amount.data
+        currency_Type = trans_form.currency_Type.data
+        target_user = trans_form.target_user.data
+        # Add currency to DB
+        transaction = Transaction(currency_amount=currency_amount,
+                               currency_Type=currency_Type,
+                               target_user=target_user,
+                               user_id=user_id)
+        db.session.add(transaction)
+        db.session.commit()
+        return redirect(url_for('mainPage'))
+    return render_template("transaction.html",
+                           form=trans_form,
+                           user_id=login_session['user_id']
+                           )
 
 if __name__ == '__main__':
     # app.secret_key = 'super_secret_key'

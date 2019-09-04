@@ -93,4 +93,13 @@ class CurrencyForm(FlaskForm):
                              validators=[InputRequired(message="Ethereum Wallet balance is required"), Length(max=1000000), balance_not_number])
     max_amount = FloatField('max_amount', validators=[InputRequired(message="Max amount that is allowed per transaction is required")])
 
-    submit_button = SubmitField("Login")
+
+
+###### Check this form ####
+class TransactionForm(FlaskForm):
+    """ Transaction Form """
+
+    currency_amount = FloatField('currency_amount', validators=[InputRequired(message="currency amount is required")])
+    currency_Type = StringField('currency_Type', validators=[InputRequired(message="currency type is required")])
+    target_user = IntegerField('ethereum_id',
+                                 validators=[InputRequired(message="Ethereum Wallet Id is required")])

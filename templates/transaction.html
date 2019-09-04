@@ -14,12 +14,12 @@
         ul li {
             color: red;
         }
-        #log{
+        #register{
             /* margin: auto; */
             width: 50%;
         }
         @media only screen and (max-width: 600px) {
-          #log {
+          #register {
             width: 100%;
           }
         }
@@ -27,7 +27,6 @@
 {% endblock %}
 
 {% block content %}
-
 
 <nav class="navbar navbar-expand-xlg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Currency</a>
@@ -38,14 +37,27 @@
 
 </nav>
 
-<div id="log" class="mx-auto">
-    <h1>Currency page</h1>
-    <a href="{{ url_for('currencyAccount', user_id=user_id)}}" class="btn btn-outline-success">Create currency account</a>
-    <a href="{{ url_for('transaction', user_id=user_id)}}" class="btn btn-outline-success">Transfare Money</a>
-</div>
+    <div id="register" class="mx-auto">
+        <h1>Get Started</h1>
+        <form action="{{ url_for('transaction', user_id=user_id) }}" method="POST">
+
+            {{ displayField(form.currency_amount, 'currency_amount') }}
+            {{ displayField(form.bitcoin_balance, 'bitcoin_balance') }}
+            {{ displayField(form.currency_Type, 'currency_Type') }}
+            {{ displayField(form.target_user, 'target_user') }}
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-outline-success">
+            </div>
 
 
-{% block script %}
-    {{ super() }}
-{% endblock %}
+            {{ form.csrf_token }}
+
+        </form>
+
+    </div>
+
+    {% block script %}
+        {{ super() }}
+    {% endblock %}
 {% endblock %}
