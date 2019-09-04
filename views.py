@@ -161,33 +161,5 @@ if __name__ == '__main__':
     # t1= threading.Thread(target=transaction_run)
     # t1.start()
     # t1.join()
-    jobstores = {
-            'default': SQLAlchemyJobStore(url=app.config['SQLALCHEMY_DATABASE_URI'])
-        }
-    executors = {
-            'default': ThreadPoolExecutor(20),
-            'processpool': ProcessPoolExecutor(5)
-        }
-    job_defaults = {
-            'coalesce': True,
-            'max_instances': 1
-            # 'replace_existing':True,
 
-        }
-
-    scheduler = BackgroundScheduler(jobstores=jobstores, executors=executors, job_defaults=job_defaults)
-
-
-    def transaction_run():
-        with app.app_context():
-            x = Transaction.query.filter_by(done=False).first
-            x.done = True
-            db.merge(x)
-            db.commit()
-
-
-
-
-    scheduler.add_job(transaction_run, 'interval', seconds=7)
-    scheduler.start()
     app.run(host='0.0.0.0', port=PORT)
