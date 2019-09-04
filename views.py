@@ -96,7 +96,7 @@ def currencyAccount(user_id):
         db.session.add(currency)
         db.session.commit()
         return redirect(url_for('mainPage'))
-    return render_template("current_account.html", form=currency_form, user_id=login_session['user_id'])
+    return render_template("currency_account.html", form=currency_form, user_id=login_session['user_id'])
 
 
 if __name__ == '__main__':
