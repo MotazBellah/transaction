@@ -40,12 +40,24 @@ app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 def transaction_run():
     print('working...')
-    x = Transaction.query.filter_by(done=False).all()
+    x = executor.submit(Transaction.query.filter_by(done=False).all())
     for i in x:
         i.done = True
         db.merge(x)
         db.commit()
     print('Done!!!!')
+
+# with app.app_context():
+#     futures = []
+#     for i in range(4):
+#         # note the lack of () after ".all", as we're passing the function object, not calling it ourselves
+#         future = executor.submit(Transaction.query.filter_by(done=False).all())
+#         futures.append(future)
+#
+#     for future in futures:
+#         print(future.result())
+
+
 
 
 
