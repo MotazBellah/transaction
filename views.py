@@ -28,6 +28,11 @@ def load_user(id):
     return User.query.get(int(id))
 
 
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('login'))
+
+
 @app.route('/')
 @app.route('/register', methods=['GET', 'POST'])
 def login_form():
