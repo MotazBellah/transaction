@@ -164,11 +164,11 @@ if __name__ == '__main__':
     jobstores = {
             'default': SQLAlchemyJobStore(url=app.config['SQLALCHEMY_DATABASE_URI'])
         }
-        executors = {
+    executors = {
             'default': ThreadPoolExecutor(20),
             'processpool': ProcessPoolExecutor(5)
         }
-        job_defaults = {
+    job_defaults = {
             'coalesce': True,
             'max_instances': 1
             # 'replace_existing':True,
