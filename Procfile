@@ -1,2 +1,1 @@
-web: gunicorn -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 views:app
-clock: python jobs.py
+web: gunicorn -k geventwebsocket.gunicorn.workers.GeventWebSocketWorker -w 1 views:app clock: python jobs.py
