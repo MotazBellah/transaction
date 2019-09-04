@@ -34,6 +34,7 @@ login = LoginManager()
 login.init_app(app)
 
 def transaction_run():
+    print('working...')
     x = Transaction.query.filter_by(done=False).all()
     for i in x:
         i.done = True
