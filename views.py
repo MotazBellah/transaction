@@ -36,7 +36,7 @@ login.init_app(app)
 
 executor = Executor(app)
 app.config['EXECUTOR_TYPE'] = 'thread'
-app.config['EXECUTOR_MAX_WORKERS'] = 5
+app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 def transaction_run():
     print('working...')
