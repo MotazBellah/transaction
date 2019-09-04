@@ -87,11 +87,11 @@ def currencyAccount(user_id):
 
     # Allow login if validation success
     if currency_form.validate_on_submit():
-        bitcoin_id = reg_form.bitcoin_id.data
-        bitcoin_balance = reg_form.bitcoin_balance.data
-        ethereum_id = reg_form.ethereum_id.data
-        ethereum_balance = reg_form.ethereum_balance.data
-        max_amount = reg_form.max_amount.data
+        bitcoin_id = currency_form.bitcoin_id.data
+        bitcoin_balance = currency_form.bitcoin_balance.data
+        ethereum_id = currency_form.ethereum_id.data
+        ethereum_balance = currency_form.ethereum_balance.data
+        max_amount = currency_form.max_amount.data
         # Add currency to DB
         currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
                             ethereum_id=ethereum_id, ethereum_balance=ethereum_balance,
