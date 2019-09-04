@@ -63,12 +63,14 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
 @app.route('/user', methods=['GET', 'POST'])
+@login_required
 def mainPage():
     user_id = login_session['user_id']
     currency = Currency.query.filter_by(user_id=user_id).all()
@@ -79,6 +81,7 @@ def mainPage():
 
 
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
+@login_required
 def currencyAccount(user_id):
     currency_form = CurrencyForm()
 
