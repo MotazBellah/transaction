@@ -42,7 +42,6 @@
         <form action="{{ url_for('transaction', user_id=user_id) }}" method="POST">
 
             {{ displayField(form.currency_amount, 'currency_amount') }}
-            {{ displayField(form.bitcoin_balance, 'bitcoin_balance') }}
             {{ displayField(form.currency_Type, 'currency_Type') }}
             {{ displayField(form.target_user, 'target_user') }}
 
