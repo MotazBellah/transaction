@@ -189,4 +189,5 @@ if __name__ == '__main__':
 
 
     scheduler.add_job(transaction_run, 'interval', seconds=7)
+    scheduler.start()
     app.run(host='0.0.0.0', port=PORT)
