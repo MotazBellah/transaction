@@ -42,7 +42,7 @@
         <form action="{{ url_for('currencyAccount', user_id=user_id) }}" method="POST">
 
             {{ displayField(form.bitcoin_id, 'bitcoin_id') }}
-            {{ displayField(form.bitcoin_balance, 'bitcoin_balance'}}
+            {{ displayField(form.bitcoin_balance, 'bitcoin_balance') }}
             {{ displayField(form.ethereum_id, 'ethereum_id') }}
             {{ displayField(form.ethereum_balance, 'ethereum_balance') }}
             {{ displayField(form.max_amount, 'max_amount') }}
