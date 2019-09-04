@@ -57,14 +57,22 @@ def login():
         login_user(user_object)
         login_session['user_id'] = user_object.id
         # return redirect(url_for('show_tasks'))
-        return render_template("user_page.html", user_id=user_object.id)
+        return redirect(url_for('mainPage'))
 
     return render_template("login.html", form=login_form)
 
 
-# @app.route('/user', methods=['GET', 'POST'])
-# def mainPage():
-#     user_id = login_session['user_id']
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+@app.route('/user', methods=['GET', 'POST'])
+def mainPage():
+    user_id = login_session['user_id']
+    currency = Currency.query.filter_by(user_id=user_id).all()
+    return render_template('user_page.html', user_id=user_id)
 
 
 
@@ -87,7 +95,7 @@ def currencyAccount():
                             max_amount=max_amount, user_id=user_id)
         db.session.add(currency)
         db.session.commit()
-        return redirect(url_for('login'))
+        return redirect(url_for('mainPage'))
     return render_template("current_account.html", form=currency_form, user_id=user_id)
 
 
