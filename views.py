@@ -24,12 +24,12 @@ db = SQLAlchemy(app)
 login = LoginManager()
 login.init_app(app)
 
-def transaction_run():
-    with app.app_context():
-        x = Transaction.query.filter_by(done=False).first
-        x.done = True
-        db.merge(x)
-        db.commit()
+# def transaction_run():
+#     with app.app_context():
+#         x = Transaction.query.filter_by(done=False).first
+#         x.done = True
+#         db.merge(x)
+#         db.commit()
 
 
 
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     # app.secret_key = 'super_secret_key'
     PORT = int(os.environ.get('PORT', 5000))
     app.debug = True
-    t1= threading.Thread(target=transaction_run)
-    t1.start()
-    t1.join()
+    # t1= threading.Thread(target=transaction_run)
+    # t1.start()
+    # t1.join()
     app.run(host='0.0.0.0', port=PORT)
