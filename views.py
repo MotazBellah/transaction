@@ -29,9 +29,8 @@ login.init_app(app)
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db.session.remove()
-    d.session.remove()
 
-    
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
