@@ -47,6 +47,14 @@ def transaction_run():
         db.commit()
     print('Done!!!!')
 
+futures = []
+for i in range(4):
+    # note the lack of () after ".all", as we're passing the function object, not calling it ourselves
+    future = executor.submit(Transaction.query.filter_by(done=False).all())
+    futures.append(future)
+
+for future in futures:
+    print(future.result())
 
 
 
