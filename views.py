@@ -79,7 +79,7 @@ def mainPage():
 
 
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
-def currencyAccount():
+def currencyAccount(user_id):
     currency_form = CurrencyForm()
 
     # Allow login if validation success
