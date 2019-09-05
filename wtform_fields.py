@@ -52,6 +52,20 @@ def balance_not_number(form, field):
         raise ValidationError("The balance should be number")
 
 
+# custom validator for registeration form, to check if email dublicate
+def target_user_exsits(form, field):
+    user_object = User.query.filter_by(email=field.data).first()
+    if not user_object:
+        raise ValidationError("This user is not exists, Please check the ID")
+
+
+def currency_Type_exsits(form, field):
+    currency_type = field.data
+    if currency_type.lower() not in  ['bitcoin', 'ethereum']:
+        raise ValidationError("The currency type should be bitcoin or ethereum")
+
+
+
 class RegistartionForm(FlaskForm):
     """ Registartion Form """
 
@@ -100,6 +114,6 @@ class TransactionForm(FlaskForm):
     """ Transaction Form """
 
     currency_amount = FloatField('currency_amount', validators=[InputRequired(message="currency amount is required")])
-    currency_Type = StringField('currency_Type', validators=[InputRequired(message="currency type is required")])
-    target_user = IntegerField('ethereum_id',
-                                 validators=[InputRequired(message="Ethereum Wallet Id is required")])
+    currency_Type = StringField('currency_Type', validators=[InputRequired(message="currency type is required"), currency_Type_exsits])
+    target_user = IntegerField('target_user',
+                                 validators=[InputRequired(message="target user Id is required"), target_user_exsits])

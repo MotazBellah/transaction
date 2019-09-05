@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, current_user, login_required, 
 from flask import session as login_session
 from wtform_fields import *
 import os
+from datetime import datetime
 # import threading
 # from concurrent.futures import ThreadPoolExecutor
 from time import sleep
@@ -43,11 +44,95 @@ def transaction_run():
     transactions = executor.submit(Transaction.query.filter_by(done=False).all)
     print(transactions.result())
     for tran in transactions.result():
+        currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first)
+        target = executor.submit(Currency.query.filter_by(user_id=tran.target_user).first)
+        trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first)
+
+        if tran.currency_Type.lower() == "bitcoin":
+            if not currency.bitcoin_id:
+                tran.state = "Transaction faild. You don't have a bitcoin account!"
+                db.session.merge(tran)
+                db.session.commit()
+            else:
+                if tran.currency_amount > int(currency.bitcoin_balance):
+                    tran.state = "Transaction faild. You don't have enough money!"
+                    db.session.merge(tran)
+                    db.session.commit()
+                elif tran.currency_amount > currency.max_amount:
+                    tran.state = "Transaction faild. You exceed the max amount!"
+                    db.session.merge(tran)
+                    db.session.commit()
+                else:
+                    balance = int(currency.bitcoin_balance) - tran.currency_amount
+                    updated_balance = str(balance)
+                    currency.bitcoin_balance = updated_balance
+                    db.session.merge(currency)
+                    db.session.commit()
+                    tran.state = "Transaction success. You sent money!"
+                    tran.time_processed = datetime.now()
+                    db.session.merge(tran)
+                    db.session.commit()
+
+                    balance_target = int(target.bitcoin_balance) + tran.currency_amount
+                    updated_tar_balance = str(balance_target)
+                    target.bitcoin_balance = updated_tar_balance
+                    db.session.merge(target)
+                    db.session.commit()
+                    trans_target.state = "Transaction success. You have recieved the money!"
+                    trans_target.time_processed = datetime.now()
+                    db.session.merge(trans_target)
+                    db.session.commit()
+
+        elif tran.currency_Type.lower() == "ethereum":
+            if not currency.ethereum_id:
+                tran.state = "Transaction faild. You don't have a ethereum account!"
+                db.session.merge(tran)
+                db.session.commit()
+            else:
+                if tran.currency_amount > int(currency.ethereum_balance):
+                    tran.state = "Transaction faild. You don't have enough money!"
+                    db.session.merge(tran)
+                    db.session.commit()
+                elif tran.currency_amount > currency.max_amount:
+                    tran.state = "Transaction faild. You exceed the max amount!"
+                    db.session.merge(tran)
+                    db.session.commit()
+                else:
+                    balance = int(currency.ethereum_balance) - tran.currency_amount
+                    updated_balance = str(balance)
+                    currency.ethereum_balance = updated_balance
+                    db.session.merge(currency)
+                    db.session.commit()
+                    tran.state = "Transaction success. You sent money!"
+                    tran.time_processed = datetime.now()
+                    trans_target.time_processed = datetime.now()
+                    db.session.merge(tran)
+                    db.session.commit()
+
+                    balance_target = int(target.ethereum_balance) + tran.currency_amount
+                    updated_tar_balance = str(balance_target)
+                    target.ethereum_balance = updated_tar_balance
+                    db.session.merge(target)
+                    db.session.commit()
+                    trans_target.state = "Transaction success. You have recieved the money!"
+                    db.session.merge(trans_target)
+                    db.session.commit()
+        else:
+            tran.state = "Transaction faild. You entered wrong value!"
+            db.session.merge(tran)
+            db.session.commit()
+
+        # set done to be True
+        # subtract the amunt of money from the source user
+        # add the amount of money to the target user
+        # update the process time
         print(tran)
         tran.done = True
         db.session.merge(tran)
         db.session.commit()
     print('Done!!!!')
+
+
 
 # with app.app_context():
 #     futures = []
@@ -173,14 +258,20 @@ def transaction(user_id):
                            )
 
 
-@app.route('/transaction-history', methods=['GET', 'POST'])
+@app.route('/transaction-history/<int:user_id>', methods=['GET', 'POST'])
 @login_required
-def transaction_history():
-
+def transaction_history(user_id):
     executor.submit(transaction_run)
-    # user_id = login_session['user_id']
-    transactions = Transaction.query.filter_by(done=False).all()
-    return render_template('trans_history.html', transactions=transactions)
+    user_id = login_session['user_id']
+    transactions = (Transaction.query
+                    .filter_by(done=True)
+                    .filter(or_(Transaction.user_id=user_id,
+                            Transaction.target_user=user_id)
+                            )
+                    .all())
+    return render_template('trans_history.html',
+                           transactions=transactions
+                           )
 
 if __name__ == '__main__':
     # app.secret_key = 'super_secret_key'
