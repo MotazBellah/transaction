@@ -48,8 +48,8 @@ def transaction_run():
     for i in x.result():
         print(i)
         i.done = True
-        db.merge(i)
-        db.commit()
+        db.session.merge(i)
+        db.session.commit()
     print('Done!!!!')
 
 # with app.app_context():
