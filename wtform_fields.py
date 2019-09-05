@@ -54,7 +54,7 @@ def balance_not_number(form, field):
 
 # custom validator for registeration form, to check if email dublicate
 def target_user_exsits(form, field):
-    user_object = User.query.filter_by(email=field.data).first()
+    user_object = User.query.filter_by(id=field.data).first()
     if not user_object:
         raise ValidationError("This user is not exists, Please check the ID")
 
