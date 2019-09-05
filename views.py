@@ -41,7 +41,7 @@ app.config['EXECUTOR_MAX_WORKERS'] = 25
 def transaction_run():
     print('working...')
     x = executor.submit(Transaction.query.filter_by(done=False).all)
-    print(x)
+    print(x.result())
     for i in x:
         print(i)
         i.done = True
