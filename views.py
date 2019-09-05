@@ -52,80 +52,85 @@ def transaction_run():
         print(target_user)
         print(target)
         print(trans_target)
-
-        if tran.currency_Type.lower() == "bitcoin":
-            if not currency.bitcoin_id:
-                tran.state = "Transaction faild. You don't have a bitcoin account!"
-                db.session.merge(tran)
-                db.session.commit()
-            else:
-                if tran.currency_amount > int(currency.bitcoin_balance):
-                    tran.state = "Transaction faild. You don't have enough money!"
-                    db.session.merge(tran)
-                    db.session.commit()
-                elif tran.currency_amount > currency.max_amount:
-                    tran.state = "Transaction faild. You exceed the max amount!"
+        if target:
+            if tran.currency_Type.lower() == "bitcoin":
+                if not currency.bitcoin_id:
+                    tran.state = "Transaction faild. You don't have a bitcoin account!"
                     db.session.merge(tran)
                     db.session.commit()
                 else:
-                    balance = int(currency.bitcoin_balance) - tran.currency_amount
-                    updated_balance = str(balance)
-                    currency.bitcoin_balance = updated_balance
-                    db.session.merge(currency)
-                    db.session.commit()
-                    tran.state = "Transaction success. You sent money!"
-                    tran.time_processed = datetime.now()
-                    db.session.merge(tran)
-                    db.session.commit()
+                    if tran.currency_amount > int(currency.bitcoin_balance):
+                        tran.state = "Transaction faild. You don't have enough money!"
+                        db.session.merge(tran)
+                        db.session.commit()
+                    elif tran.currency_amount > currency.max_amount:
+                        tran.state = "Transaction faild. You exceed the max amount!"
+                        db.session.merge(tran)
+                        db.session.commit()
+                    else:
+                        balance = int(currency.bitcoin_balance) - tran.currency_amount
+                        updated_balance = str(balance)
+                        currency.bitcoin_balance = updated_balance
+                        db.session.merge(currency)
+                        db.session.commit()
+                        tran.state = "Transaction success. You sent money!"
+                        tran.time_processed = datetime.now()
+                        db.session.merge(tran)
+                        db.session.commit()
 
-                    balance_target = int(target.bitcoin_balance) + tran.currency_amount
-                    updated_tar_balance = str(balance_target)
-                    target.bitcoin_balance = updated_tar_balance
-                    db.session.merge(target)
-                    db.session.commit()
-                    trans_target.state = "Transaction success. You have recieved the money!"
-                    trans_target.time_processed = datetime.now()
-                    db.session.merge(trans_target)
-                    db.session.commit()
+                        balance_target = int(target.bitcoin_balance) + tran.currency_amount
+                        updated_tar_balance = str(balance_target)
+                        target.bitcoin_balance = updated_tar_balance
+                        db.session.merge(target)
+                        db.session.commit()
+                        trans_target.state = "Transaction success. You have recieved the money!"
+                        trans_target.time_processed = datetime.now()
+                        db.session.merge(trans_target)
+                        db.session.commit()
 
-        elif tran.currency_Type.lower() == "ethereum":
-            if not currency.ethereum_id:
-                tran.state = "Transaction faild. You don't have a ethereum account!"
-                db.session.merge(tran)
-                db.session.commit()
-            else:
-                if tran.currency_amount > int(currency.ethereum_balance):
-                    tran.state = "Transaction faild. You don't have enough money!"
-                    db.session.merge(tran)
-                    db.session.commit()
-                elif tran.currency_amount > currency.max_amount:
-                    tran.state = "Transaction faild. You exceed the max amount!"
+            elif tran.currency_Type.lower() == "ethereum":
+                if not currency.ethereum_id:
+                    tran.state = "Transaction faild. You don't have a ethereum account!"
                     db.session.merge(tran)
                     db.session.commit()
                 else:
-                    balance = int(currency.ethereum_balance) - tran.currency_amount
-                    updated_balance = str(balance)
-                    currency.ethereum_balance = updated_balance
-                    db.session.merge(currency)
-                    db.session.commit()
-                    tran.state = "Transaction success. You sent money!"
-                    tran.time_processed = datetime.now()
-                    trans_target.time_processed = datetime.now()
-                    db.session.merge(tran)
-                    db.session.commit()
+                    if tran.currency_amount > int(currency.ethereum_balance):
+                        tran.state = "Transaction faild. You don't have enough money!"
+                        db.session.merge(tran)
+                        db.session.commit()
+                    elif tran.currency_amount > currency.max_amount:
+                        tran.state = "Transaction faild. You exceed the max amount!"
+                        db.session.merge(tran)
+                        db.session.commit()
+                    else:
+                        balance = int(currency.ethereum_balance) - tran.currency_amount
+                        updated_balance = str(balance)
+                        currency.ethereum_balance = updated_balance
+                        db.session.merge(currency)
+                        db.session.commit()
+                        tran.state = "Transaction success. You sent money!"
+                        tran.time_processed = datetime.now()
+                        trans_target.time_processed = datetime.now()
+                        db.session.merge(tran)
+                        db.session.commit()
 
-                    balance_target = int(target.ethereum_balance) + tran.currency_amount
-                    updated_tar_balance = str(balance_target)
-                    target.ethereum_balance = updated_tar_balance
-                    db.session.merge(target)
-                    db.session.commit()
-                    trans_target.state = "Transaction success. You have recieved the money!"
-                    db.session.merge(trans_target)
-                    db.session.commit()
+                        balance_target = int(target.ethereum_balance) + tran.currency_amount
+                        updated_tar_balance = str(balance_target)
+                        target.ethereum_balance = updated_tar_balance
+                        db.session.merge(target)
+                        db.session.commit()
+                        trans_target.state = "Transaction success. You have recieved the money!"
+                        db.session.merge(trans_target)
+                        db.session.commit()
+            else:
+                tran.state = "Transaction faild. You entered wrong value!"
+                db.session.merge(tran)
+                db.session.commit()
         else:
-            tran.state = "Transaction faild. You entered wrong value!"
+            tran.state = "Transaction faild. The target user has not currency account!"
             db.session.merge(tran)
             db.session.commit()
+
 
         # set done to be True
         # subtract the amunt of money from the source user

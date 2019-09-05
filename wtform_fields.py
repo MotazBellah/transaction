@@ -59,6 +59,13 @@ def target_user_exsits(form, field):
         raise ValidationError("This user is not exists, Please check the ID")
 
 
+def target_user_account(form, field):
+    target_user = User.query.filter_by(id=field.data).first()
+    currency_account = Currency.query.filter_by(user_id=target_user.id).first()
+    if not currency_account:
+        raise ValidationError("This user has no currency account!")
+
+
 def currency_Type_exsits(form, field):
     currency_type = field.data
     if currency_type.lower() not in  ['bitcoin', 'ethereum']:
@@ -116,4 +123,4 @@ class TransactionForm(FlaskForm):
     currency_amount = FloatField('currency_amount', validators=[InputRequired(message="currency amount is required")])
     currency_Type = StringField('currency_Type', validators=[InputRequired(message="currency type is required"), currency_Type_exsits])
     target_user = IntegerField('target_user',
-                                 validators=[InputRequired(message="target user Id is required"), target_user_exsits])
+                                 validators=[InputRequired(message="target user Id is required"), target_user_exsits, target_user_account])
