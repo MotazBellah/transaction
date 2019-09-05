@@ -47,6 +47,9 @@ def transaction_run():
         currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first)
         target = executor.submit(Currency.query.filter_by(user_id=tran.target_user).first)
         trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first)
+        print(tran)
+        print(target)
+        print(trans_target)
 
         if tran.currency_Type.lower() == "bitcoin":
             if not currency.bitcoin_id:
