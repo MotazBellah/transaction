@@ -40,15 +40,12 @@ app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 def transaction_run():
     print('working...')
-    x = executor.submit(Transaction.query.filter_by(done=False).all)
-    print(x.result())
-    # for i in x.result():
-    #     print(i.currency_Type)
-    #     print('Done!!!!')
-    for i in x.result():
-        print(i)
-        i.done = True
-        db.session.merge(i)
+    transactions = executor.submit(Transaction.query.filter_by(done=False).all)
+    print(transactions.result())
+    for tran in transactions.result():
+        print(tran)
+        tran.done = True
+        db.session.merge(tran)
         db.session.commit()
     print('Done!!!!')
 
