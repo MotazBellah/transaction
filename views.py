@@ -265,7 +265,7 @@ def transaction_history(user_id):
     user_id = login_session['user_id']
     transactions = (Transaction.query
                     .filter_by(done=True)
-                    .filter(or_(Transaction.user_id=user_id,
+                    .filter(db.or_(Transaction.user_id=user_id,
                             Transaction.target_user=user_id)
                             )
                     .all())
