@@ -263,8 +263,8 @@ def transaction(user_id):
 def transaction_history(user_id):
     executor.submit(transaction_run)
     user_id = login_session['user_id']
-    user_tran = Transaction.query.filter_by(done=True).filter_by(Transaction.user_id=user_id).all()
-    target_tran = Transaction.query.filter_by(done=True).filter_by(Transaction.target_user=user_id).all()
+    user_tran = Transaction.query.filter_by(done=True).filter_by(user_id=user_id).all()
+    target_tran = Transaction.query.filter_by(done=True).filter_by(target_user=user_id).all()
 
     return render_template('trans_history.html',
                            transactions=user_tran + target_tran
