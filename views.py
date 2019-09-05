@@ -42,15 +42,15 @@ def transaction_run():
     print('working...')
     x = executor.submit(Transaction.query.filter_by(done=False).all)
     print(x.result())
+    # for i in x.result():
+    #     print(i.currency_Type)
+    #     print('Done!!!!')
     for i in x.result():
-        print(i.currency_Type)
-        print('Done!!!!')
-    # for i in x:
-    #     print(i)
-    #     i.done = True
-    #     db.merge(x)
-    #     db.commit()
-    # print('Done!!!!')
+        print(i)
+        i.done = True
+        db.merge(i)
+        db.commit()
+    print('Done!!!!')
 
 # with app.app_context():
 #     futures = []
