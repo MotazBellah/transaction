@@ -118,6 +118,16 @@ class CurrencyForm(FlaskForm):
     max_amount = FloatField('max_amount', validators=[InputRequired(message="Max amount that is allowed per transaction is required")])
 
 
+class EditCurrencyForm(FlaskForm):
+    """ Edit Currency Form """
+
+    bitcoin_id = IntegerField('bitcoin_id', validators=[bitcoin_id_exists])
+    bitcoin_balance = FloatField('bitcoin_balance', validators=[balance_not_number])
+    ethereum_id = IntegerField('ethereum_id', validators=[ethereum_id_exists])
+    ethereum_balance = FloatField('ethereum_balance', validators=[balance_not_number])
+    max_amount = FloatField('max_amount')
+
+
 
 ###### Check this form ####
 class TransactionForm(FlaskForm):

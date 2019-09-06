@@ -253,6 +253,43 @@ def currencyAccount(user_id):
                            )
 
 
+@app.route('/edit-account/<int:user_id>', methods=['GET', 'POST'])
+@login_required
+def editCurrency(user_id):
+    currency_form = EditCurrencyForm()
+    editedAccount = Currency.query.filter_by(user_id=user_id).first()
+    def input_check(value, target):
+        if value:
+            editedAccount.target = value
+            db.session.merge(editedAccount)
+            db.session.commit()
+    # Allow login if validation success
+    if currency_form.validate_on_submit():
+        input_check(currency_form.bitcoin_id.data, bitcoin_id)
+        input_check(currency_form.bitcoin_balance.data, bitcoin_balance)
+        input_check(currency_form.ethereum_id.data, ethereum_id)
+        input_check(currency_form.ethereum_balance.data, ethereum_balance)
+        input_check(currency_form.max_amount.data, max_amount)
+
+        # bitcoin_id = currency_form.bitcoin_id.data
+        # bitcoin_balance = currency_form.bitcoin_balance.data
+        # ethereum_id = currency_form.ethereum_id.data
+        # ethereum_balance = currency_form.ethereum_balance.data
+        # max_amount = currency_form.max_amount.data
+        # # Add currency to DB
+        # currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
+        #                     ethereum_id=ethereum_id, ethereum_balance=ethereum_balance,
+        #                     max_amount=max_amount, user_id=user_id)
+        # db.session.add(currency)
+        # db.session.commit()
+        return redirect(url_for('mainPage'))
+    return render_template("edit_currency.html",
+                           form=currency_form,
+                           user_id=login_session['user_id']
+                           )
+
+
+
 @app.route('/transaction/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def transaction(user_id):

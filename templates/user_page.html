@@ -38,7 +38,9 @@
   <a class="navbar-brand" href="#">Currency Account Information</a>
 
     <span class="navbar-text float-right">
-        <a class="btn btn-outline-warning" href="{{ url_for('logout') }}">Edit</a>
+        {% if currency%}
+            <a class="btn btn-outline-warning" href="{{ url_for('editCurrency', user_id=user_id)}}">Edit</a>
+        {% endif %}
         <a class="btn btn-outline-danger" href="{{ url_for('logout') }}">log out</a>
     </span>
 
@@ -71,8 +73,10 @@
 
     <br>
     <a id="action" href="{{ url_for('currencyAccount', user_id=user_id)}}" class="btn btn-outline-success">Create currency account</a>
-    <a id="action" href="{{ url_for('transaction', user_id=user_id)}}" class="btn btn-outline-success">Transfare Money</a>
-    <a id="action" href="{{ url_for('transaction_history', user_id=user_id)}}" class="btn btn-outline-success">View Transaction History</a>
+    {% if currency %}
+        <a id="action" href="{{ url_for('transaction', user_id=user_id)}}" class="btn btn-outline-success">Transfare Money</a>
+        <a id="action" href="{{ url_for('transaction_history', user_id=user_id)}}" class="btn btn-outline-success">View Transaction History</a>
+    {% endif %}
 </div>
 
 
