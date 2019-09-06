@@ -132,7 +132,7 @@ def transaction_run():
                             target.ethereum_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            
+
                             trans_target.state = "Transaction success. You have recieved the money!"
                             db.session.merge(trans_target)
                             db.session.commit()
@@ -187,6 +187,9 @@ def load_user(id):
 @app.route('/')
 @app.route('/register', methods=['GET', 'POST'])
 def login_form():
+    x = User.query.all()
+    for i in x:
+        print(i.email)
     reg_form = RegistartionForm()
     if reg_form.validate_on_submit():
         username = reg_form.username.data
