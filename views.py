@@ -44,7 +44,8 @@ def transaction_run():
     transactions = executor.submit(Transaction.query.filter_by(done=False).all)
     print(transactions.result())
     for tran in transactions.result():
-        if trans.currency_amount > 0:
+        print(trans.currency_amount)
+        if trans.currency_amount:
             currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
             target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
             target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
