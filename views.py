@@ -45,16 +45,16 @@ def transaction_run():
     print(transactions.result())
     for tran in transactions.result():
         print(trans)
-        if trans.target_user:
-            currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
-            target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
-            target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
-            trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
 
-            print(tran)
-            print(target_user)
-            print(target)
-            print(trans_target)
+        currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
+        target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
+        target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
+        trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
+
+        print(tran)
+        print(target_user)
+        print(target)
+        print(trans_target)
         if target:
             if target_user.id == login_session['user_id']:
                 tran.state = "Transaction faild. You can't send to your self!"
@@ -246,9 +246,9 @@ def currencyAccount(user_id):
         db.session.add(currency)
         db.session.commit()
 
-        transaction = Transaction(user_id=user_id)
-        db.session.add(transaction)
-        db.session.commit()
+        # transaction = Transaction(user_id=user_id)
+        # db.session.add(transaction)
+        # db.session.commit()
 
         return redirect(url_for('mainPage'))
     return render_template("currency_account.html",
@@ -302,27 +302,33 @@ def editCurrency(user_id):
 @login_required
 def transaction(user_id):
     trans_form = TransactionForm()
-    transaction = Transaction.query.filter_by(user_id=user_id).first()
+    # transaction = Transaction.query.filter_by(user_id=user_id).first()
     # Allow login if validation success
     if trans_form.validate_on_submit():
-
-        transaction.currency_amount = trans_form.currency_amount.data
-        transaction.currency_Type = trans_form.currency_Type.data
-        transaction.target_user = trans_form.target_user.data
-
-        db.session.merge(transaction)
-        db.session.commit()
-        # db.session.close()
-        # currency_amount = trans_form.currency_amount.data
-        # currency_Type = trans_form.currency_Type.data
-        # target_user = trans_form.target_user.data
-        # # Add currency to DB
-        # transaction = Transaction(currency_amount=currency_amount,
-        #                        currency_Type=currency_Type,
-        #                        target_user=target_user,
-        #                        user_id=user_id)
-        # db.session.add(transaction)
+        # transaction.currency_amount = trans_form.currency_amount.data
+        # transaction.currency_Type = trans_form.currency_Type.data
+        # transaction.target_user = trans_form.target_user.data
+        #
+        # db.session.merge(transaction)
         # db.session.commit()
+        # db.session.close()
+        currency_amount = trans_form.currency_amount.data
+        currency_Type = trans_form.currency_Type.data
+        target_user = trans_form.target_user.data
+        # Add currency to DB
+        transaction = Transaction(currency_amount=currency_amount,
+                               currency_Type=currency_Type,
+                               target_user=target_user,
+                               user_id=user_id)
+        db.session.add(transaction)
+        db.session.commit()
+
+        target_tran = Transaction.query.filter_by(user_id=target_user).first()
+        if not target_tran:
+            target_transaction = Transaction(user_id=target_user)
+            db.session.add(target_transaction)
+            db.session.commit()
+            
         return redirect(url_for('mainPage'))
     return render_template("transaction.html",
                            form=trans_form,
