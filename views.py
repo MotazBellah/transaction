@@ -95,10 +95,11 @@ def transaction_run():
                             target.bitcoin_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            # trans_target.state = "Transaction success. You have recieved the money!"
-                            # trans_target.time_processed = datetime.now()
-                            # db.session.merge(trans_target)
-                            # db.session.commit()
+
+                            trans_target.state = "Transaction success. You have recieved the money!"
+                            trans_target.time_processed = datetime.now()
+                            db.session.merge(trans_target)
+                            db.session.commit()
 
                 elif tran.currency_Type.lower() == "ethereum":
                     if not currency.ethereum_id:
@@ -131,9 +132,10 @@ def transaction_run():
                             target.ethereum_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            # trans_target.state = "Transaction success. You have recieved the money!"
-                            # db.session.merge(trans_target)
-                            # db.session.commit()
+                            
+                            trans_target.state = "Transaction success. You have recieved the money!"
+                            db.session.merge(trans_target)
+                            db.session.commit()
                 else:
                     tran.state = "Transaction faild. You entered wrong value!"
                     db.session.merge(tran)
