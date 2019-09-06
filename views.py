@@ -224,8 +224,8 @@ def logout():
 @login_required
 def mainPage():
     user_id = login_session['user_id']
-    currency = Currency.query.filter_by(user_id=user_id).all()
-    return render_template('user_page.html', user_id=user_id)
+    currency = Currency.query.filter_by(user_id=user_id).first()
+    return render_template('user_page.html', user_id=user_id, currency=currency)
 
 
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
