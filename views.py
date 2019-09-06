@@ -49,7 +49,7 @@ def transaction_run():
         target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
         trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
         if not trans_target:
-            trans_target = executor.submit(Transaction(user_id=tran.target_user))
+            trans_target = executor.submit(Transaction(user_id=tran.target_user)).result()
             db.session.add(trans_target)
             db.session.commit()
         print(tran)
