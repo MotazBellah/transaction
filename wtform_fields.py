@@ -46,10 +46,11 @@ def ethereum_id_exists(form, field):
 # custom validator for registeration form, to check if email dublicate
 def balance_not_number(form, field):
     balance_number = field.data
-    try:
-        int(balance_number)
-    except ValueError:
-        raise ValidationError("The balance should be number")
+    if balance_number:
+        try:
+            int(balance_number)
+        except ValueError:
+            raise ValidationError("The balance should be number")
 
 
 # # custom validator for registeration form, to check if email dublicate
