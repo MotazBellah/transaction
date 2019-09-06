@@ -190,7 +190,11 @@ def login_form():
         # Add user to DB
         user = User(name=username, email=email, password=hashed_pswd)
         db.session.add(user)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback() 
+
         return redirect(url_for('login'))
 
     return render_template('log.html', form=reg_form)
@@ -328,7 +332,7 @@ def transaction(user_id):
             target_transaction = Transaction(user_id=target_user)
             db.session.add(target_transaction)
             db.session.commit()
-            
+
         return redirect(url_for('mainPage'))
     return render_template("transaction.html",
                            form=trans_form,
