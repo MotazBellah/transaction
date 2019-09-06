@@ -126,7 +126,7 @@ class EditCurrencyForm(FlaskForm):
     bitcoin_balance = FloatField('bitcoin_balance', validators=[ Optional(), balance_not_number])
     ethereum_id = IntegerField('ethereum_id', validators=[Optional(), ethereum_id_exists])
     ethereum_balance = FloatField('ethereum_balance', validators=[Optional(), balance_not_number])
-    max_amount = FloatField('max_amount', [validators.Optional()])
+    max_amount = FloatField('max_amount', validators=[Optional()])
 
 
 
