@@ -34,7 +34,7 @@ class Transaction(db.Model):
     __tablename__ = 'transaction'
 
     id = db.Column(db.Integer, primary_key=True)
-    currency_amount = db.Column(db.Float)
+    currency_amount = db.Column(db.Float, default=0.0)
     currency_Type = db.Column(db.String())
     target_user = db.Column(db.Integer)
     time_created = db.Column(db.String(250), default=datetime.now())

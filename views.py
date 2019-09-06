@@ -41,7 +41,7 @@ app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 def transaction_run():
     print('working...')
-    transactions = executor.submit(Transaction.query.filter_by(done=False).all)
+    transactions = executor.submit(Transaction.query.filter_by(done=False).filter_by(currency_amount>0.0).all)
     print(transactions.result())
     for tran in transactions.result():
         currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
@@ -300,17 +300,17 @@ def editCurrency(user_id):
 @login_required
 def transaction(user_id):
     trans_form = TransactionForm()
-
+    transaction = Transaction.query.filter_by(user_id=user_id).first()
     # Allow login if validation success
     if trans_form.validate_on_submit():
-        transaction = Transaction.query.filter_by(user_id=user_id).first()
+
         transaction.currency_amount = trans_form.currency_amount.data
         transaction.currency_Type = trans_form.currency_Type.data
         transaction.target_user = trans_form.target_user.data
 
         db.session.merge(transaction)
         db.session.commit()
-        db.session.close()
+        # db.session.close()
         # currency_amount = trans_form.currency_amount.data
         # currency_Type = trans_form.currency_Type.data
         # target_user = trans_form.target_user.data
