@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from models import User, Currency
 from passlib.hash import pbkdf2_sha256
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField, IntegerField, Optional
 from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
 
 # custom validator for registeration form, to check if email dublicate
@@ -122,11 +122,11 @@ class CurrencyForm(FlaskForm):
 class EditCurrencyForm(FlaskForm):
     """ Edit Currency Form """
 
-    bitcoin_id = IntegerField('bitcoin_id', validators=[bitcoin_id_exists])
-    bitcoin_balance = FloatField('bitcoin_balance', validators=[balance_not_number])
-    ethereum_id = IntegerField('ethereum_id', validators=[ethereum_id_exists])
-    ethereum_balance = FloatField('ethereum_balance', validators=[balance_not_number])
-    max_amount = FloatField('max_amount')
+    bitcoin_id = IntegerField('bitcoin_id', validators=[ Optional(), bitcoin_id_exists])
+    bitcoin_balance = FloatField('bitcoin_balance', validators=[ Optional(), balance_not_number])
+    ethereum_id = IntegerField('ethereum_id', validators=[Optional(), ethereum_id_exists])
+    ethereum_balance = FloatField('ethereum_balance', validators=[Optional(), balance_not_number])
+    max_amount = FloatField('max_amount', [validators.Optional()])
 
 
 
