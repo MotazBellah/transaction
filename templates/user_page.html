@@ -40,26 +40,29 @@
 
 <div id="log" class="mx-auto">
     <h1>Currency page</h1>
-    <table class="table table-striped table-dark">
-      <thead>
-        <tr>
-          <th scope="col">Bitcoin ID</th>
-          <th scope="col">Bitcoin Balance</th>
-          <th scope="col">Ethereum ID</th>
-          <th scope="col">Ethereum Balance</th>
-          <th scope="col">Max Amount Transfare</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">{{ currency.bitcoin_id }}</th>
-          <td>{{ currency.bitcoin_balance }}</td>
-          <td>{{ currency.ethereum_id }}</td>
-          <td>{{ currency.ethereum_balance }}</td>
-          <td>{{ currency.max_amount }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive-sm">
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th scope="col">Bitcoin ID</th>
+              <th scope="col">Bitcoin Balance</th>
+              <th scope="col">Ethereum ID</th>
+              <th scope="col">Ethereum Balance</th>
+              <th scope="col">Max Amount Transfare</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">{{ currency.bitcoin_id }}</th>
+              <td>{{ currency.bitcoin_balance }}</td>
+              <td>{{ currency.ethereum_id }}</td>
+              <td>{{ currency.ethereum_balance }}</td>
+              <td>{{ currency.max_amount }}</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
     <br>
     <a href="{{ url_for('currencyAccount', user_id=user_id)}}" class="btn btn-outline-success">Create currency account</a>
     <a href="{{ url_for('transaction', user_id=user_id)}}" class="btn btn-outline-success">Transfare Money</a>
