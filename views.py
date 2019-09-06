@@ -49,12 +49,12 @@ def transaction_run():
         currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
         target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
         target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
-        trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
+        # trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
 
         print(tran)
         print(target_user)
         print(target)
-        print(trans_target)
+        # print(trans_target)
         if target:
             if target_user.id == login_session['user_id']:
                 tran.state = "Transaction faild. You can't send to your self!"
@@ -91,10 +91,10 @@ def transaction_run():
                             target.bitcoin_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            trans_target.state = "Transaction success. You have recieved the money!"
-                            trans_target.time_processed = datetime.now()
-                            db.session.merge(trans_target)
-                            db.session.commit()
+                            # trans_target.state = "Transaction success. You have recieved the money!"
+                            # trans_target.time_processed = datetime.now()
+                            # db.session.merge(trans_target)
+                            # db.session.commit()
 
                 elif tran.currency_Type.lower() == "ethereum":
                     if not currency.ethereum_id:
@@ -127,9 +127,9 @@ def transaction_run():
                             target.ethereum_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            trans_target.state = "Transaction success. You have recieved the money!"
-                            db.session.merge(trans_target)
-                            db.session.commit()
+                            # trans_target.state = "Transaction success. You have recieved the money!"
+                            # db.session.merge(trans_target)
+                            # db.session.commit()
                 else:
                     tran.state = "Transaction faild. You entered wrong value!"
                     db.session.merge(tran)
@@ -193,7 +193,7 @@ def login_form():
         try:
             db.session.commit()
         except Exception as e:
-            db.session.rollback() 
+            db.session.rollback()
 
         return redirect(url_for('login'))
 
