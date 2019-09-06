@@ -107,11 +107,11 @@ class CurrencyForm(FlaskForm):
     """ Currency Form """
 
     bitcoin_id = IntegerField('bitcoin_id', validators=[InputRequired(message="Bitcoin Wallet Id is required"), bitcoin_id_exists])
-    bitcoin_balance = StringField('bitcoin_balance', validators=[InputRequired(message="Bitcoin Wallet balance is required"), Length(max=1000000), balance_not_number])
+    bitcoin_balance = FloatField('bitcoin_balance', validators=[InputRequired(message="Bitcoin Wallet balance is required"), balance_not_number])
     ethereum_id = IntegerField('ethereum_id',
                                  validators=[InputRequired(message="Ethereum Wallet Id is required"), ethereum_id_exists])
-    ethereum_balance = StringField('ethereum_balance',
-                             validators=[InputRequired(message="Ethereum Wallet balance is required"), Length(max=1000000), balance_not_number])
+    ethereum_balance = FloatField('ethereum_balance',
+                             validators=[InputRequired(message="Ethereum Wallet balance is required"), balance_not_number])
     max_amount = FloatField('max_amount', validators=[InputRequired(message="Max amount that is allowed per transaction is required")])
 
 

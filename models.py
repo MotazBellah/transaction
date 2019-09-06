@@ -22,9 +22,9 @@ class Currency(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     bitcoin_id =  db.Column(db.Integer)
-    bitcoin_balance =  db.Column(db.String(1000000), nullable=False)
+    bitcoin_balance =  db.Column(db.Float, default=0.0)
     ethereum_id =  db.Column(db.Integer)
-    ethereum_balance =  db.Column(db.String(1000000), nullable=False)
+    ethereum_balance =  db.Column(db.Float, default= 0.0)
     max_amount = db.Column(db.Float)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     user = db.relationship(User)
