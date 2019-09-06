@@ -49,20 +49,20 @@ def transaction_run():
 
         currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
         print(currency)
-        target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
-        print(target_user)
-        target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
+        # target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
+        # print(target_user)
+        target = executor.submit(Currency.query.filter_by(user_id=tran.target_user).first).result()
         # trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
 
         print(tran)
-        print(target_user)
+        # print(target_user)
         print(target)
         # print(trans_target)
         if target:
-            if target_user.id == login_session['user_id']:
-                tran.state = "Transaction faild. You can't send to your self!"
-                db.session.merge(tran)
-                db.session.commit()
+            # if target_user.id == login_session['user_id']:
+            #     tran.state = "Transaction faild. You can't send to your self!"
+            #     db.session.merge(tran)
+            #     db.session.commit()
             else:
                 if tran.currency_Type.lower() == "bitcoin":
                     if not currency.bitcoin_id:
