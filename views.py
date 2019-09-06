@@ -269,22 +269,27 @@ def editCurrency(user_id):
             editedAccount.bitcoin_id = currency_form.bitcoin_id.data
             db.session.merge(editedAccount)
             db.session.commit()
+            db.session.close()
         if currency_form.bitcoin_balance.data:
             editedAccount.bitcoin_balance = currency_form.bitcoin_balance.data
             db.session.merge(editedAccount)
             db.session.commit()
+            db.session.close()
         if currency_form.max_amount.data:
             editedAccount.max_amount = currency_form.max_amount.data
             db.session.merge(editedAccount)
             db.session.commit()
+            db.session.close()
         if currency_form.bitcoin_id.data:
             editedAccount.bitcoin_id = currency_form.bitcoin_id.data
             db.session.merge(editedAccount)
             db.session.commit()
+            db.session.close()
         if currency_form.ethereum_balance.data:
             editedAccount.ethereum_balance = currency_form.ethereum_balance.data
             db.session.merge(editedAccount)
             db.session.commit()
+            db.session.close()
         # input_check(currency_form.bitcoin_id.data, bitcoin_id)
         # input_check(currency_form.bitcoin_balance.data, bitcoin_balance)
         # input_check(currency_form.ethereum_id.data, ethereum_id)
