@@ -41,6 +41,7 @@ app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 def transaction_run():
     print('working...')
+    x = ""
     transactions = executor.submit(Transaction.query.filter_by(done=False).all)
     print(transactions.result())
     for tran in transactions.result():
@@ -59,10 +60,10 @@ def transaction_run():
         print(target)
         # print(trans_target)
         if target:
-            # if target_user.id == login_session['user_id']:
-            #     tran.state = "Transaction faild. You can't send to your self!"
-            #     db.session.merge(tran)
-            #     db.session.commit()
+            if x == "login_session['user_id']":
+                tran.state = "Transaction faild. You can't send to your self!"
+                db.session.merge(tran)
+                db.session.commit()
             else:
                 if tran.currency_Type.lower() == "bitcoin":
                     if not currency.bitcoin_id:
