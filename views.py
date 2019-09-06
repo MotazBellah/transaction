@@ -258,18 +258,38 @@ def currencyAccount(user_id):
 def editCurrency(user_id):
     currency_form = EditCurrencyForm()
     editedAccount = Currency.query.filter_by(user_id=user_id).first()
-    def input_check(value, target):
-        if value:
-            editedAccount.target = value
-            db.session.merge(editedAccount)
-            db.session.commit()
+    # def input_check(value, target):
+    #     if value:
+    #         editedAccount.target = value
+    #         db.session.merge(editedAccount)
+    #         db.session.commit()
     # Allow login if validation success
     if currency_form.validate_on_submit():
-        input_check(currency_form.bitcoin_id.data, bitcoin_id)
-        input_check(currency_form.bitcoin_balance.data, bitcoin_balance)
-        input_check(currency_form.ethereum_id.data, ethereum_id)
-        input_check(currency_form.ethereum_balance.data, ethereum_balance)
-        input_check(currency_form.max_amount.data, max_amount)
+        if currency_form.bitcoin_id.data:
+            editedAccount.bitcoin_id = currency_form.bitcoin_id.data
+            db.session.merge(editedAccount)
+            db.session.commit()
+        if currency_form.bitcoin_balance.data:
+            editedAccount.bitcoin_balance = currency_form.bitcoin_balance.data
+            db.session.merge(editedAccount)
+            db.session.commit()
+        if currency_form.max_amount.data:
+            editedAccount.max_amount = currency_form.max_amount.data
+            db.session.merge(editedAccount)
+            db.session.commit()
+        if currency_form.bitcoin_id.data:
+            editedAccount.bitcoin_id = currency_form.bitcoin_id.data
+            db.session.merge(editedAccount)
+            db.session.commit()
+        if currency_form.ethereum_balance.data:
+            editedAccount.ethereum_balance = currency_form.ethereum_balance.data
+            db.session.merge(editedAccount)
+            db.session.commit()
+        # input_check(currency_form.bitcoin_id.data, bitcoin_id)
+        # input_check(currency_form.bitcoin_balance.data, bitcoin_balance)
+        # input_check(currency_form.ethereum_id.data, ethereum_id)
+        # input_check(currency_form.ethereum_balance.data, ethereum_balance)
+        # input_check(currency_form.max_amount.data, max_amount)
 
         # bitcoin_id = currency_form.bitcoin_id.data
         # bitcoin_balance = currency_form.bitcoin_balance.data
