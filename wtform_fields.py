@@ -52,16 +52,19 @@ def balance_not_number(form, field):
         raise ValidationError("The balance should be number")
 
 
-# custom validator for registeration form, to check if email dublicate
-def target_user_exsits(form, field):
-    user_object = User.query.filter_by(id=field.data).first()
-    if not user_object:
-        raise ValidationError("This user is not exists, Please check the ID")
+# # custom validator for registeration form, to check if email dublicate
+# def target_user_exsits(form, field):
+#     user_object = User.query.filter_by(id=field.data).first()
+#     if not user_object:
+#         raise ValidationError("This user is not exists, Please check the ID")
 
 
 def target_user_account(form, field):
     target_user = User.query.filter_by(id=field.data).first()
-    currency_account = Currency.query.filter_by(user_id=target_user.id).first()
+    if target_user:
+        currency_account = Currency.query.filter_by(user_id=target_user.id).first()
+    else:
+        raise ValidationError("This user is not exists, Please check the ID")
     if not currency_account:
         raise ValidationError("This user has no currency account!")
 
@@ -123,4 +126,4 @@ class TransactionForm(FlaskForm):
     currency_amount = FloatField('currency_amount', validators=[InputRequired(message="currency amount is required")])
     currency_Type = StringField('currency_Type', validators=[InputRequired(message="currency type is required"), currency_Type_exsits])
     target_user = IntegerField('target_user',
-                                 validators=[InputRequired(message="target user Id is required"), target_user_exsits, target_user_account])
+                                 validators=[InputRequired(message="target user Id is required"), target_user_account])
