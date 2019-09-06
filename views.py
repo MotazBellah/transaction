@@ -41,18 +41,19 @@ app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 def transaction_run():
     print('working...')
-    transactions = executor.submit(Transaction.query.filter_by(done=False).filter_by(currency_amount>0.0).all)
+    transactions = executor.submit(Transaction.query.filter_by(done=False).all)
     print(transactions.result())
     for tran in transactions.result():
-        currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
-        target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
-        target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
-        trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
+        if trans.currency_amount > 0:
+            currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
+            target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
+            target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
+            trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
 
-        print(tran)
-        print(target_user)
-        print(target)
-        print(trans_target)
+            print(tran)
+            print(target_user)
+            print(target)
+            print(trans_target)
         if target:
             if target_user.id == login_session['user_id']:
                 tran.state = "Transaction faild. You can't send to your self!"
