@@ -47,15 +47,12 @@ def transaction_run():
         currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
         target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
         target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
-        # trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
-        # if not trans_target:
-        #     trans_target = executor.submit(Transaction(user_id=tran.target_user)).result()
-        #     db.session.add(trans_target)
-        #     db.session.commit()
+        trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
+
         print(tran)
         print(target_user)
         print(target)
-        # print(trans_target)
+        print(trans_target)
         if target:
             if target_user.id == login_session['user_id']:
                 tran.state = "Transaction faild. You can't send to your self!"
@@ -92,10 +89,10 @@ def transaction_run():
                             target.bitcoin_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            # trans_target.state = "Transaction success. You have recieved the money!"
-                            # trans_target.time_processed = datetime.now()
-                            # db.session.merge(trans_target)
-                            # db.session.commit()
+                            trans_target.state = "Transaction success. You have recieved the money!"
+                            trans_target.time_processed = datetime.now()
+                            db.session.merge(trans_target)
+                            db.session.commit()
 
                 elif tran.currency_Type.lower() == "ethereum":
                     if not currency.ethereum_id:
@@ -128,9 +125,9 @@ def transaction_run():
                             target.ethereum_balance = balance_target
                             db.session.merge(target)
                             db.session.commit()
-                            # trans_target.state = "Transaction success. You have recieved the money!"
-                            # db.session.merge(trans_target)
-                            # db.session.commit()
+                            trans_target.state = "Transaction success. You have recieved the money!"
+                            db.session.merge(trans_target)
+                            db.session.commit()
                 else:
                     tran.state = "Transaction faild. You entered wrong value!"
                     db.session.merge(tran)
@@ -246,6 +243,11 @@ def currencyAccount(user_id):
                             max_amount=max_amount, user_id=user_id)
         db.session.add(currency)
         db.session.commit()
+
+        transaction = Transaction(user_id=user_id)
+        db.session.add(transaction)
+        db.session.commit()
+
         return redirect(url_for('mainPage'))
     return render_template("currency_account.html",
                            form=currency_form,
@@ -258,11 +260,6 @@ def currencyAccount(user_id):
 def editCurrency(user_id):
     currency_form = EditCurrencyForm()
     editedAccount = Currency.query.filter_by(user_id=user_id).first()
-    # def input_check(value, target):
-    #     if value:
-    #         editedAccount.target = value
-    #         db.session.merge(editedAccount)
-    #         db.session.commit()
     # Allow login if validation success
     if currency_form.validate_on_submit():
         if currency_form.bitcoin_id.data:
@@ -280,7 +277,7 @@ def editCurrency(user_id):
             db.session.merge(editedAccount)
             db.session.commit()
             db.session.close()
-        if currency_form.bitcoin_id.data:
+        if currency_form.ethereum_id.data:
             editedAccount.bitcoin_id = currency_form.bitcoin_id.data
             db.session.merge(editedAccount)
             db.session.commit()
@@ -290,23 +287,7 @@ def editCurrency(user_id):
             db.session.merge(editedAccount)
             db.session.commit()
             db.session.close()
-        # input_check(currency_form.bitcoin_id.data, bitcoin_id)
-        # input_check(currency_form.bitcoin_balance.data, bitcoin_balance)
-        # input_check(currency_form.ethereum_id.data, ethereum_id)
-        # input_check(currency_form.ethereum_balance.data, ethereum_balance)
-        # input_check(currency_form.max_amount.data, max_amount)
 
-        # bitcoin_id = currency_form.bitcoin_id.data
-        # bitcoin_balance = currency_form.bitcoin_balance.data
-        # ethereum_id = currency_form.ethereum_id.data
-        # ethereum_balance = currency_form.ethereum_balance.data
-        # max_amount = currency_form.max_amount.data
-        # # Add currency to DB
-        # currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
-        #                     ethereum_id=ethereum_id, ethereum_balance=ethereum_balance,
-        #                     max_amount=max_amount, user_id=user_id)
-        # db.session.add(currency)
-        # db.session.commit()
         return redirect(url_for('mainPage'))
     return render_template("edit_currency.html",
                            form=currency_form,
@@ -322,16 +303,24 @@ def transaction(user_id):
 
     # Allow login if validation success
     if trans_form.validate_on_submit():
-        currency_amount = trans_form.currency_amount.data
-        currency_Type = trans_form.currency_Type.data
-        target_user = trans_form.target_user.data
-        # Add currency to DB
-        transaction = Transaction(currency_amount=currency_amount,
-                               currency_Type=currency_Type,
-                               target_user=target_user,
-                               user_id=user_id)
-        db.session.add(transaction)
+        transaction = Transaction.query.filter_by(user_id=user_id).first()
+        transaction.currency_amount = trans_form.currency_amount.data
+        transaction.currency_Type = trans_form.currency_Type.data
+        transaction.target_user = trans_form.target_user.data
+
+        db.session.merge(transaction)
         db.session.commit()
+        db.session.close()
+        # currency_amount = trans_form.currency_amount.data
+        # currency_Type = trans_form.currency_Type.data
+        # target_user = trans_form.target_user.data
+        # # Add currency to DB
+        # transaction = Transaction(currency_amount=currency_amount,
+        #                        currency_Type=currency_Type,
+        #                        target_user=target_user,
+        #                        user_id=user_id)
+        # db.session.add(transaction)
+        # db.session.commit()
         return redirect(url_for('mainPage'))
     return render_template("transaction.html",
                            form=trans_form,
