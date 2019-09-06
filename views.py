@@ -45,10 +45,12 @@ def transaction_run():
     print(transactions.result())
     for tran in transactions.result():
         print("Looping...")
-        print(trans)
+        # print(trans)
 
         currency = executor.submit(Currency.query.filter_by(user_id=tran.user_id).first).result()
+        print(currency)
         target_user = executor.submit(User.query.filter_by(id=tran.target_user).first).result()
+        print(target_user)
         target = executor.submit(Currency.query.filter_by(user_id=target_user.id).first).result()
         # trans_target = executor.submit(Transaction.query.filter_by(user_id=tran.target_user).first).result()
 
