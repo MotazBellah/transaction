@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from models import User, Currency
 from passlib.hash import pbkdf2_sha256
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField, IntegerField, Optional
-from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FloatField, IntegerField
+from wtforms.validators import InputRequired, Email, Length, EqualTo, ValidationError, Optional
 
 # custom validator for registeration form, to check if email dublicate
 def email_exists(form, field):
