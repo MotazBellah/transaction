@@ -18,6 +18,28 @@
             /* margin: auto; */
             width: 50%;
         }
+
+        table {
+              width:100%;
+            }
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+            }
+            th, td {
+              padding: 15px;
+              text-align: left;
+            }
+            table#t01 tr:nth-child(even) {
+              background-color: #eee;
+            }
+            table#t01 tr:nth-child(odd) {
+             background-color: #fff;
+            }
+            table#t01 th {
+              background-color: black;
+              color: white;
+            }
         @media only screen and (max-width: 600px) {
           #log {
             width: 100%;
@@ -43,6 +65,24 @@
     {% for tran in transactions %}
     <p>{{ tran.currency_amount}}</p>
     {% endfor %}
+
+    <table id="t01">
+      <tr>
+        <th>Target ID</th>
+        <th>Transfared Money</th>
+        <th>Bitcoin balance</th>
+        <th>Ethereum balance</th>
+        <th>State</th>
+      </tr>
+      {% for tran in transactions %}
+          <tr>
+            <td>{{ tran.target_user }}</td>
+            <td>{{ tran.currency_amount }}</td>
+            <td>{{ currency.bitcoin_balance }}</td>
+            <td>{{ currency.bitcoin_balance }}</td>
+          </tr>
+      {% endfor %}
+    </table>
 </div>
 
 

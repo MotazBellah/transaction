@@ -275,10 +275,11 @@ def transaction_history(user_id):
     user_id = login_session['user_id']
     user_tran = Transaction.query.filter_by(done=True).filter_by(user_id=user_id).all()
     target_tran = Transaction.query.filter_by(done=True).filter_by(target_user=user_id).all()
+    user_curr = Currency.query.filter_by(user_id=user_id).first()
 
     return render_template('trans_history.html',
-                           transactions=user_tran + target_tran
-                           )
+                           transactions=user_tran + target_tran,
+                           currency=user_curr)
 
 if __name__ == '__main__':
     # app.secret_key = 'super_secret_key'
