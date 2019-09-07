@@ -119,7 +119,7 @@ def transaction_run():
 
                             tran.state = "Transaction success."
                             # trans_source.state = "Transaction success. You sent money!"
-                            tran.time_processed = datetime.now()
+                            tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)")
                             db.session.merge(tran)
                             db.session.commit()
 
