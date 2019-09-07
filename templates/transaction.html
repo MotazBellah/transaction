@@ -38,7 +38,7 @@
 </nav>
 
     <div id="register" class="mx-auto">
-        <h1>Get Started</h1>
+        <h2>Transfare Money</h2>
         <form action="{{ url_for('transaction', user_id=user_id) }}" method="POST">
 
             {{ displayField(form.currency_amount, 'currency_amount') }}
@@ -47,13 +47,14 @@
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-outline-success">
+                <a class="btn btn-outline-danger" href="{{ url_for('mainPage') }}">Cancel</a>
             </div>
 
 
             {{ form.csrf_token }}
 
         </form>
-        <a class="btn btn-outline-danger" href="{{ url_for('mainPage') }}">Cancel</a>
+
 
     </div>
 
