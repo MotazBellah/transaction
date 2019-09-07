@@ -30,6 +30,7 @@ class BasicsTestCase(unittest.TestCase):
                 'username': 'user1',
                 'password': '1238'
             }, follow_redirects=True)
+        print(response)
 
 # class FlaskTestCase(unittest.TestCase):
 #
