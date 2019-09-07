@@ -31,6 +31,8 @@ class BasicsTestCase(unittest.TestCase):
                 'password': '1238'
             }, follow_redirects=True)
         print(response.data)
+        self.assertIn(b"You are logged in", response.data)
+
 
 # class FlaskTestCase(unittest.TestCase):
 #
