@@ -1,64 +1,93 @@
-from views import app
+# from views import app
+# import unittest
+
 import unittest
+from flask import current_app
+from app import create_app
 
 
-class FlaskTestCase(unittest.TestCase):
+class BasicsTestCase(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app()
+        self.app.config['WTF_CSRF_ENABLED'] = False
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        self.client = self.app.test_client()
 
-    def test_index(self):
-        tester = app.test_client(self)
-        response = tester.get('/', content_type='html/text')
+    def tearDown(self):
+        self.app_context.pop()
+
+    def test_app_exists(self):
+        self.assertFalse(current_app is None)
+
+    def test_home_page(self):
+        response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
-    def test_login(self):
-        tester = app.test_client(self)
-        response = tester.get('/login', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
+    # def test_login(self):
+    #     response = self.client.post(
+    #         '/login', data={
+    #             'username': 'a',
+    #             'password': 'a'
+    #         })
 
-
-    def test_mainPage(self):
-        tester = app.test_client(self)
-        response = tester.get('/user', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
-
-    def test_mainPage(self):
-        tester = app.test_client(self)
-        response = tester.get('/user', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
-
-
-    def test_currencyAccount(self):
-        tester = app.test_client(self)
-        response = tester.get('/currency-account/1', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
-
-        response = tester.get('/currency-account/999', content_type='html/text')
-        self.assertNotEqual(response.status_code, 200)
-
-
-    def test_EdityAccount(self):
-        tester = app.test_client(self)
-        response = tester.get('/edit-account/1', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
-
-        response = tester.get('/edit-account/999', content_type='html/text')
-        self.assertNotEqual(response.status_code, 200)
-
-
-    def test_transfare(self):
-        tester = app.test_client(self)
-        response = tester.get('/transaction/1', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
-
-        response = tester.get('/transaction/999', content_type='html/text')
-        self.assertNotEqual(response.status_code, 200)
-
-    def test_history(self):
-        tester = app.test_client(self)
-        response = tester.get('/transaction-history/1', content_type='html/text')
-        self.assertEqual(response.status_code, 200)
-
-        response = tester.get('/transaction-history/999', content_type='html/text')
-        self.assertNotEqual(response.status_code, 200)
+# class FlaskTestCase(unittest.TestCase):
+#
+#     def test_index(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#     def test_login(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/login', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#
+#     def test_mainPage(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/user', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#     def test_mainPage(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/user', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#
+#     def test_currencyAccount(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/currency-account/1', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#         response = tester.get('/currency-account/999', content_type='html/text')
+#         self.assertNotEqual(response.status_code, 200)
+#
+#
+#     def test_EdityAccount(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/edit-account/1', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#         response = tester.get('/edit-account/999', content_type='html/text')
+#         self.assertNotEqual(response.status_code, 200)
+#
+#
+#     def test_transfare(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/transaction/1', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#         response = tester.get('/transaction/999', content_type='html/text')
+#         self.assertNotEqual(response.status_code, 200)
+#
+#     def test_history(self):
+#         tester = app.test_client(self)
+#         response = tester.get('/transaction-history/1', content_type='html/text')
+#         self.assertEqual(response.status_code, 200)
+#
+#         response = tester.get('/transaction-history/999', content_type='html/text')
+#         self.assertNotEqual(response.status_code, 200)
 
     # def test_purchase_10VS5(self):
     #     tester = app.test_client(self)
