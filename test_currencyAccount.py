@@ -43,9 +43,9 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/currency-account/4', data={
                 'bitcoin_id': 1000,
-                'bitcoin_balance': 10000.0,
+                'bitcoin_balance': 10000,
                 'ethereum_id': 9999,
-                'ethereum_balance': 1000.0,
+                'ethereum_balance': 1000,
                 'max_amount': 3000.0
             }, follow_redirects=True)
         self.assertIn(b"This bitcoin id is aleardy exists", response.data)
@@ -57,10 +57,10 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/currency-account/4', data={
                 'bitcoin_id': 9999,
-                'bitcoin_balance': 10000.0,
+                'bitcoin_balance': 10000,
                 'ethereum_id': 1000,
-                'ethereum_balance': 1000.0,
-                'max_amount': 3000.0
+                'ethereum_balance': 1000,
+                'max_amount': 3000
             }, follow_redirects=True)
         self.assertIn(b"This ethereum id is aleardy exists", response.data)
 
