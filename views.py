@@ -280,8 +280,9 @@ def mainPage():
 
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
 def currencyAccount(user_id):
-    # if not current_user.is_authenticated:
-    #     return redirect(url_for('login'))
+    if not app.config['LOGIN_DISABLED']:
+        if not current_user.is_authenticated:
+            return redirect(url_for('login'))
     executor.submit(transaction_run)
     currency_form = CurrencyForm()
 
