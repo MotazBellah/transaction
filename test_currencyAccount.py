@@ -8,6 +8,7 @@ class BasicsTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app
         app.config['TESTING'] = True
+        app.login_manager.init_app(app)
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
         self.app_context.push()
