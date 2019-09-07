@@ -293,7 +293,7 @@ def currencyAccount(user_id):
         ethereum_balance = currency_form.ethereum_balance.data
         max_amount = currency_form.max_amount.data
         # Add currency to DB
-        if Currency.query.filter_by(user_id=login_session['user_id']).first():
+        if Currency.query.filter_by(user_id=user_id).first():
             flash("This user has already an account")
             return redirect(url_for('mainPage'))
 
@@ -310,7 +310,7 @@ def currencyAccount(user_id):
         return redirect(url_for('mainPage'))
     return render_template("currency_account.html",
                            form=currency_form,
-                           user_id=login_session['user_id']
+                           user_id=user_id
                            )
 
 
