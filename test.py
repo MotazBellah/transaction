@@ -28,7 +28,7 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/login', data={
                 'username': 'user1',
-                'password': '1234'
+                'password': '1238'
             }, follow_redirects=True)
 
 # class FlaskTestCase(unittest.TestCase):
