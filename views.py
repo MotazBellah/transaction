@@ -276,7 +276,7 @@ def logout():
 
 @app.route('/user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
-def mainPage():
+def mainPage(user_id):
     executor.submit(transaction_run)
     user_id = login_session['user_id']
     currency = Currency.query.filter_by(user_id=user_id).first()
