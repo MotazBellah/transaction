@@ -213,6 +213,7 @@ def transaction_run():
 # To avaid  connection time out errors
 @app.teardown_appcontext
 def shutdown_session(exception=None):
+    db.session.close()
     db.session.remove()
 
 
