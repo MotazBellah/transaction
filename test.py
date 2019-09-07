@@ -28,7 +28,7 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/login', data={
                 'username': 'user1',
-                'password': '1238'
+                'password': '1234'
             }, follow_redirects=True)
         print(response.data)
         self.assertIn(b"You are logged in", response.data)
