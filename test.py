@@ -2,17 +2,20 @@
 # import unittest
 
 import unittest
+import os
 from flask import current_app
 from views import app
 
 
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = app
+        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+        app.config['TESTING'] = True
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
+        # db.create_all()
 
     def tearDown(self):
         self.app_context.pop()
@@ -27,7 +30,7 @@ class BasicsTestCase(unittest.TestCase):
     def test_login(self):
         response = self.client.post(
             '/login', data={
-                'username': 'user1',
+                'email': 'user1@gmail.com',
                 'password': '1234'
             }, follow_redirects=True)
         print(response.data)
