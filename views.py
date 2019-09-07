@@ -408,7 +408,7 @@ def transaction(user_id):
         return redirect(url_for('mainPage'))
     return render_template("transaction.html",
                            form=trans_form,
-                           user_id=login_session['user_id']
+                           user_id=user_id
                            )
 
 
