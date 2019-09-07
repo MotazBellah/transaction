@@ -77,8 +77,8 @@ def transaction_run():
         print(target)
         print(trans_target)
         if target:
-            if x == "login_session['user_id']":
-                tran.state = "Transaction faild. You can't send to your self!"
+            if tran.user_id == tran.target_user:
+                tran.state = "Transaction faild."
                 db.session.merge(tran)
                 db.session.commit()
             else:
