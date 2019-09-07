@@ -3,12 +3,12 @@
 
 import unittest
 from flask import current_app
-from app import create_app
+from views import app
 
 
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
-        self.app = create_app()
+        self.app = app
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
         self.app_context.push()
