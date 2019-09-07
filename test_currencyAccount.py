@@ -7,7 +7,7 @@ from views import app
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app
-        app.config['TESTING'] = True
+        # app.config['TESTING'] = True
         app.login_manager.init_app(app)
         app.config['LOGIN_DISABLED'] = True
         self.app.config['WTF_CSRF_ENABLED'] = False
