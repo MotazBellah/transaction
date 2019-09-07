@@ -33,7 +33,7 @@ class BasicsTestCase(unittest.TestCase):
     def test_account_get(self):
         """Test the get response of register route"""
         response = self.client.get('/currency-account/4')
-        self.assertEqual(response.status_code, 200)
+
         self.assertIn(b"Create currency account", response.data)
 
 
@@ -43,10 +43,10 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/currency-account/4', data={
                 'bitcoin_id': 1000,
-                'bitcoin_balance': 10000,
+                'bitcoin_balance': 10000.0,
                 'ethereum_id': 9999,
-                'ethereum_balance': 1000,
-                'max_amount': 3000
+                'ethereum_balance': 1000.0,
+                'max_amount': 3000.0
             }, follow_redirects=True)
         self.assertIn(b"This bitcoin id is aleardy exists", response.data)
 
@@ -57,10 +57,10 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/currency-account/4', data={
                 'bitcoin_id': 9999,
-                'bitcoin_balance': 10000,
+                'bitcoin_balance': 10000.0,
                 'ethereum_id': 1000,
-                'ethereum_balance': 1000,
-                'max_amount': 3000
+                'ethereum_balance': 1000.0,
+                'max_amount': 3000.0
             }, follow_redirects=True)
         self.assertIn(b"This ethereum id is aleardy exists", response.data)
 
