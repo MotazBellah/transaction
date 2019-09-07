@@ -261,7 +261,7 @@ def login():
         login_user(user_object)
         login_session['user_id'] = user_object.id
         flash('You are logged in', 'success')
-        return redirect(url_for('mainPage'))
+        return redirect(url_for('mainPage', user_id=login_session['user_id']))
 
     return render_template("login.html", form=login_form)
 
@@ -274,7 +274,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def mainPage():
     executor.submit(transaction_run)
@@ -303,7 +303,7 @@ def currencyAccount(user_id):
         # Add currency to DB
         if Currency.query.filter_by(user_id=user_id).first():
             flash("This user has already an account", 'error')
-            return redirect(url_for('mainPage'))
+            return redirect(url_for('mainPage'), user_id=user_id)
 
         currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
                             ethereum_id=ethereum_id, ethereum_balance=ethereum_balance,
@@ -315,7 +315,7 @@ def currencyAccount(user_id):
         # db.session.add(transaction)
         # db.session.commit()
         flash('Created currency account successfully.', 'success')
-        return redirect(url_for('mainPage'))
+        return redirect(url_for('mainPage'), user_id=user_id)
     return render_template("currency_account.html",
                            form=currency_form,
                            user_id=user_id
@@ -364,7 +364,7 @@ def editCurrency(user_id):
             db.session.close()
 
         flash('Edited currency account successfully.', 'success')
-        return redirect(url_for('mainPage'))
+        return redirect(url_for('mainPage'), user_id=user_id)
     return render_template("edit_currency.html",
                            form=currency_form,
                            user_id=login_session['user_id']
@@ -409,7 +409,7 @@ def transaction(user_id):
             db.session.commit()
 
         flash('Transaction request sent successfully.', 'success')
-        return redirect(url_for('mainPage'))
+        return redirect(url_for('mainPage'), user_id=user_id)
     return render_template("transaction.html",
                            form=trans_form,
                            user_id=user_id

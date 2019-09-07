@@ -58,7 +58,7 @@
 
             <div class="form-group">
                 <input type="submit" value="Edit" class="btn btn-outline-success">
-                <a class="btn btn-outline-danger" href="{{ url_for('mainPage') }}">Cancel</a>
+                <a class="btn btn-outline-danger" href="{{ url_for('mainPage'), user_id=user_id }}">Cancel</a>
             </div>
 
             {{ form.csrf_token }}
