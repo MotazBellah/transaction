@@ -283,7 +283,9 @@ def mainPage():
 def currencyAccount(user_id):
     if not app.config['LOGIN_DISABLED']:
         if not current_user.is_authenticated:
+            flash("You are not logged in!", 'error')
             return redirect(url_for('login'))
+
     executor.submit(transaction_run)
     currency_form = CurrencyForm()
 
@@ -296,7 +298,7 @@ def currencyAccount(user_id):
         max_amount = currency_form.max_amount.data
         # Add currency to DB
         if Currency.query.filter_by(user_id=user_id).first():
-            flash("This user has already an account")
+            flash("This user has already an account", 'error')
             return redirect(url_for('mainPage'))
 
         currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
@@ -317,11 +319,18 @@ def currencyAccount(user_id):
 
 
 @app.route('/edit-account/<int:user_id>', methods=['GET', 'POST'])
-@login_required
 def editCurrency(user_id):
+    if not app.config['LOGIN_DISABLED']:
+        if not current_user.is_authenticated:
+            flash("You are not logged in!", 'error')
+            return redirect(url_for('login'))
+
     executor.submit(transaction_run)
     currency_form = EditCurrencyForm()
     editedAccount = Currency.query.filter_by(user_id=user_id).first()
+    if not editedAccount:
+        flash('You have to create an account first .', 'error')
+        return redirect(url_for('currencyAccount', user_id=user_id))
     # Allow login if validation success
     if currency_form.validate_on_submit():
         if currency_form.bitcoin_id.data:
@@ -360,8 +369,12 @@ def editCurrency(user_id):
 
 
 @app.route('/transaction/<int:user_id>', methods=['GET', 'POST'])
-@login_required
 def transaction(user_id):
+    if not app.config['LOGIN_DISABLED']:
+        if not current_user.is_authenticated:
+            flash("You are not logged in!", 'error')
+            return redirect(url_for('login'))
+
     executor.submit(transaction_run)
     trans_form = TransactionForm()
     # transaction = Transaction.query.filter_by(user_id=user_id).first()

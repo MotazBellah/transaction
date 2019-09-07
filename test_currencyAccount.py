@@ -32,15 +32,15 @@ class BasicsTestCase(unittest.TestCase):
 
 
     def test_account_get(self):
-        """Test the get response of register route"""
+        """Test the get response of create account route"""
         response = self.client.get('/currency-account/4')
         print(response.data)
         self.assertIn(b"Create currency account", response.data)
 
-    
+
     def test_account_bit(self):
-        """Test the post response of register route,
-        with valid credentials"""
+        """Test the post response of create account route,
+        with the same bitcoin_id"""
         response = self.client.post(
             '/currency-account/4', data={
                 'bitcoin_id': 1000,
@@ -54,8 +54,8 @@ class BasicsTestCase(unittest.TestCase):
 
 
     def test_account_eth(self):
-        """Test the post response of register route,
-        with valid credentials"""
+        """Test the post response of create account route,
+        with the same ethereum_id"""
         response = self.client.post(
             '/currency-account/4', data={
                 'bitcoin_id': 9999,
