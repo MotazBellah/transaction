@@ -31,7 +31,7 @@ class BasicsTestCase(unittest.TestCase):
     def test_login_get(self):
         """Test the get response of login route"""
         response = self.client.get('/login')
-        self.assertEqual(response.status_code, 20
+        self.assertEqual(response.status_code, 200)
         self.assertIn(b"Enter your email/password", response.data)
 
 
