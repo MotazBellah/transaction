@@ -24,12 +24,12 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
-    # def test_login(self):
-    #     response = self.client.post(
-    #         '/login', data={
-    #             'username': 'a',
-    #             'password': 'a'
-    #         })
+    def test_login(self):
+        response = self.client.post(
+            '/login', data={
+                'username': 'user1',
+                'password': '1234'
+            }, follow_redirects=True)
 
 # class FlaskTestCase(unittest.TestCase):
 #
