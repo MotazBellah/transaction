@@ -279,7 +279,6 @@ def mainPage():
 
 
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
-@login_required
 def currencyAccount(user_id):
     # if not current_user.is_authenticated:
     #     return redirect(url_for('login'))
