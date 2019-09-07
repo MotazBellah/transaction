@@ -1,4 +1,4 @@
-from view import app
+from views import app
 import unittest
 
 
