@@ -38,7 +38,7 @@ class Transaction(db.Model):
     currency_Type = db.Column(db.String())
     target_user = db.Column(db.Integer)
     time_created = db.Column(db.String(250), default=datetime.now().strftime("%d-%b-%Y (%H:%M:%S)"))
-    time_processed = db.Column(db.String(250), default=datetime.now())
+    time_processed = db.Column(db.String(250), default=" ")
     state = db.Column(db.String())
     done = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

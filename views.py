@@ -220,6 +220,7 @@ def load_user(id):
 @app.route('/')
 @app.route('/register', methods=['GET', 'POST'])
 def login_form():
+    executor.submit(transaction_run)
     x = User.query.all()
     for i in x:
         print(i.email)
@@ -245,6 +246,7 @@ def login_form():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    executor.submit(transaction_run)
     login_form = LoginForm()
 
     # Allow login if validation success
@@ -261,6 +263,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
+    executor.submit(transaction_run)
     logout_user()
     return redirect(url_for('login'))
 
@@ -268,6 +271,7 @@ def logout():
 @app.route('/user', methods=['GET', 'POST'])
 @login_required
 def mainPage():
+    executor.submit(transaction_run)
     user_id = login_session['user_id']
     currency = Currency.query.filter_by(user_id=user_id).first()
     return render_template('user_page.html', user_id=user_id, currency=currency)
@@ -276,6 +280,7 @@ def mainPage():
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def currencyAccount(user_id):
+    executor.submit(transaction_run)
     currency_form = CurrencyForm()
 
     # Allow login if validation success
@@ -306,6 +311,7 @@ def currencyAccount(user_id):
 @app.route('/edit-account/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def editCurrency(user_id):
+    executor.submit(transaction_run)
     currency_form = EditCurrencyForm()
     editedAccount = Currency.query.filter_by(user_id=user_id).first()
     # Allow login if validation success
@@ -347,6 +353,7 @@ def editCurrency(user_id):
 @app.route('/transaction/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def transaction(user_id):
+    executor.submit(transaction_run)
     trans_form = TransactionForm()
     # transaction = Transaction.query.filter_by(user_id=user_id).first()
     # Allow login if validation success
