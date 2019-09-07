@@ -281,6 +281,8 @@ def mainPage():
 @app.route('/currency-account/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 def currencyAccount(user_id):
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     executor.submit(transaction_run)
     currency_form = CurrencyForm()
 
@@ -292,6 +294,10 @@ def currencyAccount(user_id):
         ethereum_balance = currency_form.ethereum_balance.data
         max_amount = currency_form.max_amount.data
         # Add currency to DB
+        if Currency.query.filter_by(user_id=login_session['user_id']).first():
+            flash("This user has already an account")
+            return redirect(url_for('mainPage'))
+
         currency = Currency(bitcoin_id=bitcoin_id, bitcoin_balance=bitcoin_balance,
                             ethereum_id=ethereum_id, ethereum_balance=ethereum_balance,
                             max_amount=max_amount, user_id=user_id)
@@ -383,7 +389,7 @@ def transaction(user_id):
             target_transaction = Transaction(user_id=target_user)
             db.session.add(target_transaction)
             db.session.commit()
-            
+
         flash('Transaction request sent successfully.', 'success')
         return redirect(url_for('mainPage'))
     return render_template("transaction.html",
