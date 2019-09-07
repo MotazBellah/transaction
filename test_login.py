@@ -63,9 +63,8 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/login', data={
                 'email': 'user1@gmail.com',
-                'password': '1234'
+                'password': '9999999'
             }, follow_redirects=True)
-        print(response.data)
         self.assertIn(b"Email or password is incorrect", response.data)
 
 
