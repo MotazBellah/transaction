@@ -1,6 +1,3 @@
-# from views import app
-# import unittest
-
 import unittest
 import os
 from flask import current_app
@@ -9,120 +6,67 @@ from views import app
 
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
-        # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
         self.app = app
         app.config['TESTING'] = True
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
         self.app_context.push()
         self.client = self.app.test_client()
-        # db.create_all()
+
 
     def tearDown(self):
         self.app_context.pop()
 
     def test_app_exists(self):
+        """Test if the app exists """
         self.assertFalse(current_app is None)
 
+
     def test_home_page(self):
+        """Test the home page"""
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
 
+
+    def test_login_get(self):
+        """Test the get response of login route"""
+        response = self.client.get('/login')
+        self.assertEqual(response.status_code, 20
+        self.assertIn(b"Enter your email/password", response.data)
+
+
     def test_login(self):
+        """Test the post response of login route,
+        with valid credentials"""
+        response = self.client.post(
+            '/login', data={
+                'email': 'user1@gmail.com',
+                'password': '1234'
+            }, follow_redirects=True)
+        self.assertIn(b"You are logged in", response.data)
+
+
+    def test_login_email(self):
+        """Test the post response of login route,
+        with invalid email"""
+        response = self.client.post(
+            '/login', data={
+                'email': 'xxxyyuser999@gmail.com',
+                'password': '1234'
+            }, follow_redirects=True)
+        self.assertIn(b"Email or password is incorrect", response.data)
+
+
+    def test_login_pass(self):
+        """Test the post response of login route,
+        with invalid passward"""
         response = self.client.post(
             '/login', data={
                 'email': 'user1@gmail.com',
                 'password': '1234'
             }, follow_redirects=True)
         print(response.data)
-        self.assertIn(b"You are logged in", response.data)
-
-
-# class FlaskTestCase(unittest.TestCase):
-#
-#     def test_index(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_login(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/login', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#
-#     def test_mainPage(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/user', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#     def test_mainPage(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/user', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#
-#     def test_currencyAccount(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/currency-account/1', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#         response = tester.get('/currency-account/999', content_type='html/text')
-#         self.assertNotEqual(response.status_code, 200)
-#
-#
-#     def test_EdityAccount(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/edit-account/1', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#         response = tester.get('/edit-account/999', content_type='html/text')
-#         self.assertNotEqual(response.status_code, 200)
-#
-#
-#     def test_transfare(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/transaction/1', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#         response = tester.get('/transaction/999', content_type='html/text')
-#         self.assertNotEqual(response.status_code, 200)
-#
-#     def test_history(self):
-#         tester = app.test_client(self)
-#         response = tester.get('/transaction-history/1', content_type='html/text')
-#         self.assertEqual(response.status_code, 200)
-#
-#         response = tester.get('/transaction-history/999', content_type='html/text')
-#         self.assertNotEqual(response.status_code, 200)
-
-    # def test_purchase_10VS5(self):
-    #     tester = app.test_client(self)
-    #     response = tester.post('/purchase', data=dict(name="10 VS5"),
-    #                           follow_redirects=True)
-    #     print(response)
-    #     self.assertIn(b"$17.98", response.data)
-    #     self.assertIn(b"2 x 5 $8.99", response.data)
-    #
-    #
-    # def test_purchase_14MB11(self):
-    #     tester = app.test_client(self)
-    #     response = tester.post('/purchase', data=dict(name="14 MB11"),
-    #                           follow_redirects=True)
-    #     print(response)
-    #     self.assertIn(b"$54.80", response.data)
-    #     self.assertIn(b"1 x 8 $24.95 3 x 2 $9.95", response.data)
-    #
-    #
-    # def test_purchase_13CF(self):
-    #     tester = app.test_client(self)
-    #     response = tester.post('/purchase', data=dict(name="13 CF"),
-    #                           follow_redirects=True)
-    #     print(response)
-    #     self.assertIn(b"$25.85", response.data)
-    #     self.assertIn(b"2 x 5 $9.95 1 x 3 $5.95", response.data)
-
-
+        self.assertIn(b"Email or password is incorrect", response.data)
 
 
 if __name__ == '__main__':
