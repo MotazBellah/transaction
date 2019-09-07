@@ -53,7 +53,7 @@
 
 
 <nav class="navbar navbar-expand-xlg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Currency</a>
+  <a class="navbar-brand" href="#">Transaction History</a>
 
     <span class="navbar-text float-right">
         <a class="btn btn-outline-danger" href="{{ url_for('logout') }}">log out</a>
@@ -62,7 +62,6 @@
 </nav>
 
 <div id="log" class="mx-auto">
-    <h1>Currency page</h1>
 
     <table id="t01">
       <tr>
@@ -73,6 +72,7 @@
         <th>State</th>
       </tr>
       {% for tran in transactions %}
+        {% if tran.target_user %}
           <tr>
             <td>{{ tran.target_user }}</td>
             <td>{{ tran.currency_amount }}</td>
@@ -80,6 +80,7 @@
             <td>{{ currency.ethereum_balance }}</td>
             <td>{{ tran.state }}</td>
           </tr>
+          {% endif %}
       {% endfor %}
     </table>
 </div>

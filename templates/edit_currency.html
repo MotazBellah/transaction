@@ -51,10 +51,9 @@
                 <input type="submit" value="Edit" class="btn btn-outline-success">
             </div>
 
-
             {{ form.csrf_token }}
-
         </form>
+        <a class="btn btn-outline-danger" href="{{ url_for('mainPage') }}">Cancel</a>
 
     </div>
 
