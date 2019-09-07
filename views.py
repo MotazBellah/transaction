@@ -34,6 +34,7 @@ db = SQLAlchemy(app)
 # configure flask_login
 login = LoginManager()
 login.init_app(app)
+app.config['LOGIN_DISABLED'] = False
 
 executor = Executor(app)
 app.config['EXECUTOR_TYPE'] = 'thread'
