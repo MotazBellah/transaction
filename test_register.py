@@ -40,12 +40,12 @@ class BasicsTestCase(unittest.TestCase):
         with valid credentials"""
         response = self.client.post(
             '/register', data={
-                'username': 'user2',
-                'email': 'user2@gmail.com',
+                'username': 'user4',
+                'email': 'user4@gmail.com',
                 'password': '1234',
                 'confirm_pswd': '1234'
             }, follow_redirects=True)
-        self.assertIn(b"Registered successfully. Please login", response.data)
+        self.assertIn(b"Registered successfully", response.data)
 
 
     def test_register_email(self):
