@@ -72,7 +72,9 @@
     </div>
 
     <br>
-    <a id="action" href="{{ url_for('currencyAccount', user_id=user_id)}}" class="btn btn-outline-success">Create currency account</a>
+    {% if not currency %}
+        <a id="action" href="{{ url_for('currencyAccount', user_id=user_id)}}" class="btn btn-outline-success">Create currency account</a>
+    {% endif %}
     {% if currency %}
         <a id="action" href="{{ url_for('transaction', user_id=user_id)}}" class="btn btn-outline-success">Transfare Money</a>
         <a id="action" href="{{ url_for('transaction_history', user_id=user_id)}}" class="btn btn-outline-success">View Transaction History</a>
