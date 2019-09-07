@@ -9,7 +9,8 @@ from views import app
 
 class BasicsTestCase(unittest.TestCase):
     def setUp(self):
-        app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+        # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+        self.app = app
         app.config['TESTING'] = True
         self.app.config['WTF_CSRF_ENABLED'] = False
         self.app_context = self.app.app_context()
