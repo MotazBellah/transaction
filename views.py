@@ -51,7 +51,7 @@ def dated_url_for(endpoint, **values):
                                  endpoint, filename)
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
-    
+
 
 def transaction_run():
     print('working...')
@@ -153,7 +153,7 @@ def transaction_run():
                             db.session.commit()
                             tran.state = "Transaction success."
                             # trans_source.state = "Transaction success. You sent money!"
-                            tran.time_processed = datetime.now()
+                            tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)")
                             # trans_source.time_processed = datetime.now()
                             db.session.merge(tran)
                             db.session.commit()

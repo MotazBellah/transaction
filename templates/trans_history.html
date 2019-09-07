@@ -38,7 +38,7 @@
              background-color: #fff;
             }
             table#t01 th {
-              background-color: black;
+              background-color: #343A40;
               color: white;
             }
         @media only screen and (max-width: 600px) {
@@ -60,7 +60,7 @@
     </span>
 
 </nav>
-
+<br><br>
 <div id="log" class="mx-auto">
 
     <table id="t01">
@@ -76,8 +76,8 @@
           <tr>
             <td>{{ tran.target_user }}</td>
             <td>{{ tran.currency_amount }}</td>
-            <td>{{ currency.bitcoin_balance }}</td>
-            <td>{{ currency.ethereum_balance }}</td>
+            <td>{{ tran.time_created }}</td>
+            <td>{{ tran.time_processed }}</td>
             <td>{{ tran.state }}</td>
           </tr>
           {% endif %}
