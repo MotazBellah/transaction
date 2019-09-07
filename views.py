@@ -238,6 +238,7 @@ def login_form():
         except Exception as e:
             db.session.rollback()
 
+        flash('Registered successfully. Please login.', 'success')
         return redirect(url_for('login'))
 
     return render_template('log.html', form=reg_form)
@@ -254,7 +255,7 @@ def login():
         user_object = User.query.filter_by(email=login_form.email.data).first()
         login_user(user_object)
         login_session['user_id'] = user_object.id
-        # return redirect(url_for('show_tasks'))
+        flash('You are logged in', 'success')
         return redirect(url_for('mainPage'))
 
     return render_template("login.html", form=login_form)
@@ -300,7 +301,7 @@ def currencyAccount(user_id):
         # transaction = Transaction(user_id=user_id)
         # db.session.add(transaction)
         # db.session.commit()
-
+        flash('Created currency account successfully.', 'success')
         return redirect(url_for('mainPage'))
     return render_template("currency_account.html",
                            form=currency_form,
@@ -342,6 +343,7 @@ def editCurrency(user_id):
             db.session.commit()
             db.session.close()
 
+        flash('Edited currency account successfully.', 'success')
         return redirect(url_for('mainPage'))
     return render_template("edit_currency.html",
                            form=currency_form,
@@ -381,7 +383,8 @@ def transaction(user_id):
             target_transaction = Transaction(user_id=target_user)
             db.session.add(target_transaction)
             db.session.commit()
-
+            
+        flash('Transaction request sent successfully.', 'success')
         return redirect(url_for('mainPage'))
     return render_template("transaction.html",
                            form=trans_form,

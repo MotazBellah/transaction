@@ -19,6 +19,13 @@
             width: 100%;
         }
 
+        .error {
+          background-color: red;
+        }
+        .success {
+          background-color: green;
+        }
+
         #action{
             margin-bottom: 8px;
         }
@@ -33,7 +40,7 @@
 
 {% block content %}
 
-
+{{ super() }}
 <nav class="navbar navbar-expand-xlg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Currency Account Information</a>
 

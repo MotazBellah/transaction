@@ -13,7 +13,19 @@
     {% endblock %}
   </head>
   <body>
-    <div id="content" class="container">{% block content %}{% endblock %}</div>
+    <div id="content" class="container">
+        {% block content %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="list-unstyled">
+                        {% for category, message in messages %}
+                        <li class="{{ category }} p-2 my-2">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        {% endblock %}
+    </div>
 
     {% block script %}
         <!-- Optional JavaScript -->

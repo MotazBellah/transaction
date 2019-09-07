@@ -18,6 +18,12 @@
             /* margin: auto; */
             width: 50%;
         }
+        .error {
+          background-color: red;
+        }
+        .success {
+          background-color: green;
+        }
         @media only screen and (max-width: 600px) {
           #log {
             width: 100%;
@@ -39,6 +45,7 @@
 </nav>
 
 <div id="log" class="mx-auto">
+    {{ super() }}
     <h1>Login now</h1>
     <p>Enter your email/password</p>
     <form action="{{ url_for('login') }}" method="POST">
