@@ -41,7 +41,7 @@ class BasicsTestCase(unittest.TestCase):
         response = self.client.post(
             '/register', data={
                 'username': 'user4',
-                'email': 'user4@gmail.com',
+                'email': 'user40@gmail.com',
                 'password': '1234',
                 'confirm_pswd': '1234'
             }, follow_redirects=True)
