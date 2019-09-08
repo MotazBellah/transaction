@@ -11,10 +11,12 @@ from wtform_fields import *
 import os
 from views import app, db
 
-
-# executor = Executor(app)
-# app.config['EXECUTOR_TYPE'] = 'thread'
-# app.config['EXECUTOR_MAX_WORKERS'] = 25
+# Flask-Executor use concurrent.futures to launch parallel tasks
+# https://flask-executor.readthedocs.io/en/latest/
+# https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures
+executor = Executor(app)
+app.config['EXECUTOR_TYPE'] = 'thread'
+app.config['EXECUTOR_MAX_WORKERS'] = 25
 
 
 def transaction_run():
