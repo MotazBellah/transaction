@@ -6,7 +6,7 @@ from time import gmtime, strftime
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask import session as login_session
 from wtform_fields import *
-form models import db as d
+from models import db as d
 import os
 from datetime import datetime
 from time import sleep
