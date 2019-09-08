@@ -356,7 +356,7 @@ def editCurrency(user_id):
             db.session.close()
         # check if ethereum_id is changed
         if currency_form.ethereum_id.data:
-            editedAccount.bitcoin_id = currency_form.bitcoin_id.data
+            editedAccount.ethereum_id = currency_form.ethereum_id.data
             db.session.merge(editedAccount)
             db.session.commit()
             db.session.close()
