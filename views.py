@@ -154,7 +154,7 @@ def transaction_run():
                                 db.session.commit()
                                 db.session.remove()
                                 tran.state = "Transaction success."
-                                tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)"))
+                                # tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)"))
                                 db.session.merge(tran)
                                 db.session.commit()
                                 db.session.remove()
