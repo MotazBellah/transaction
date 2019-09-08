@@ -43,7 +43,7 @@ and connected between them using ForeignKey, Transaction class contain the main 
 - Flask-Executor use concurrent.futures to launch parallel tasks
 - `https://flask-executor.readthedocs.io/en/latest/`
 - `https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures`
-- Created a function that work in the background that validator each transaction request and update each transaction
+- Created a function that work in the background and validate each transaction request and update each transaction
 
 ##### Protect all public endpoints against unauthorised access in some way.
 
