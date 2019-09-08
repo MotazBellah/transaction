@@ -11,11 +11,10 @@ import os
 from datetime import datetime
 from time import sleep
 from flask_executor import Executor
-from jobs import transaction_run
 
 
 app = Flask(__name__)
-app.secret_key="sdfdsuperfdlkngflkjnlkbgirlsdhjdrefsdfucfgfgfhhyah!!!!!dfghhm;glhjkhjl,.jk"
+app.secret_key = os.urandom(12).hex()
 app.config['WTF_CSRF_SECRET_KEY'] = "b'f\xfa\x8b{X\x8b\x9eM\x83l\x19\xad\x84\x08\xaa"
 
 app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get('DATABASE_URL')
