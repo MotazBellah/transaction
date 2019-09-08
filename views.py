@@ -153,15 +153,22 @@ def transaction_run():
                                 db.session.merge(currency)
                                 db.session.commit()
                                 db.session.remove()
-                                tran.state = "Transaction success."
-                                tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)"))
-                                db.session.merge(tran)
-                                db.session.commit()
-                                db.session.remove()
+
+                                # tran.state = "Transaction success."
+                                # tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)"))
+                                # db.session.merge(tran)
+                                # db.session.commit()
+                                # db.session.remove()
 
                                 balance_target = target.ethereum_balance + tran.currency_amount
                                 target.ethereum_balance = balance_target
                                 db.session.merge(target)
+                                db.session.commit()
+                                db.session.remove()
+
+                                tran.state = "Transaction success."
+                                tran.time_processed = datetime.now().strftime("%d-%b-%Y (%H:%M:%S)")
+                                db.session.merge(tran)
                                 db.session.commit()
                                 db.session.remove()
                     # if the currency type not bitcoin or ethereum
