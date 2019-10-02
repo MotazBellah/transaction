@@ -8,16 +8,16 @@ App URL on Heroku https://transaction-s.herokuapp.com/
 - Use Flask framework.
 - Use Bootstrap in front-end
 
-## Tasks:
+## Walkthrough:
 
-#### Model and structure the following data in a "database" of your choice
+#### Model and structure the data in a "database"
 
 - Used SQLAlchemy database to generate tables(user, currency, transaction )by represent each table with User class, Currency class, and Transaction class set relationship between them using ForeignKey, where User class contain the main information about the users like email, name,..., Currency class contain the information about the user currency account like bitcoin ID, bitcoin Balance, max amount per transfare,...
 and connected between them using ForeignKey, Transaction class contain the main information should transaction request has like target user and max-amount
 - Run `python create.py` in order to create database using `db.create_all` and transfare classes to database tables
 
-#### Implement a backend service that provides the following endpoints / handlers
-##### Create user (with basic user details)
+#### Implement a backend services
+##### Create user
 
 - Create Flask route to register function
 - Using wtforms, build form for registration
@@ -45,7 +45,7 @@ and connected between them using ForeignKey, Transaction class contain the main 
 - `https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures`
 - Created a function that work in the background and validate each transaction request and update each transaction
 
-##### Protect all public endpoints against unauthorised access in some way.
+##### Protect all public endpoints against unauthorised access.
 
 - User login_required decorator
 - checked if the current user is authenticated
@@ -54,7 +54,7 @@ and connected between them using ForeignKey, Transaction class contain the main 
 
 1. Create App on Heroku.
 
-2. On your app’s “Overview” page, click the “Configure Add-ons” button.
+2. On app’s “Overview” page, click the “Configure Add-ons” button.
 
 3. In the “Add-ons” section of the page, type in and select “Heroku Postgres.
 
